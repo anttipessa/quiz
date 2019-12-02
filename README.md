@@ -56,6 +56,8 @@ for high-school students, especially for the domains of mathematics and computer
 
 TODO: add your files here and give a short description
 
+Group console.log(): Antti Pessa, Henri Hakkarainen and Niki Väänänen
+
 ## Game
 
 TODO: describe your work
