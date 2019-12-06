@@ -1,0 +1,13 @@
+{{#if games}}
+{{#withGroup games 2}}
+<div class="card-deck mt-2">
+    {{#each this as |game|}}
+    {{>game_info game}}
+    {{/each}}
+</div>
+{{/withGroup}}
+{{else}}
+<div class="alert alert-danger">
+    <p>No games found.</p>
+</div>
+{{/if}}

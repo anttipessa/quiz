@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const GamesController = require('../controllers/game');
 
-router.get('/'); // tähän vielä GamesControllerista funktio, mitä tehdään
+router.get('/', GamesController.listGames);
 
 router
   .route('/:id')

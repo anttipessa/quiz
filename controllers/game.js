@@ -8,8 +8,8 @@ const Questionnaire = require('../models/questionnaire');
 module.exports = {
 
     /* 
-     * Nyt toimii GET-request URLiin /games/5dea3a9db6384424cc0f173a
-     * joka hakee tuota ID:tä vastaavan pelin MongoDB:stä.
+     * Nyt toimii GET-request URLiin /games/id
+     * joka hakee tuota id:tä vastaavan pelin MongoDB:stä.
      * 
      * Tästä voi nyt jatkaa kehittämään toimintoja siten, että näytettävä sivu
      * esittää peliä (nyt vain testausmielessä oleva hbs-template) ja muutenkin
@@ -17,17 +17,27 @@ module.exports = {
      */
     async showGame(request, response) {
         console.log(request.params.id)
-        const games = await Questionnaire.find()
-        console.log(games)
-        const game = await Questionnaire.findById(request.params.id)
-            .exec();
+        try {
+            const game = await Questionnaire.findById(request.params.id)
+                .exec();
 
-        if (!game) {
-            console.log('Error');
-            return response.redirect('/');
+            response.render('game/game', { game });
         }
+        catch (err) {
+            console.error(err);
+            console.log('Redirecting to /games');
+            return response.redirect('/games');
+        }
+    },
 
-        response.render('game/game', { game });
+    /*
+     * Listaa kaikki tietokannasta löytyvät pelit näkyväksi sivulle.
+     */
+    async listGames(request, response) {
+        const games = await Questionnaire.find()
+            .sort('title')
+            .exec();
+        response.render('game/games', { games })
     }
 
 };
