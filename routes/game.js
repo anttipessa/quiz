@@ -9,6 +9,6 @@ router.get('/', GamesController.listGames);
 router
   .route('/:id')
   .get(GamesController.launchGame)
-  .post(); // tänne vielä GamesControllerista funktio, mitä tapahtuu POST-metodissa
+  .post(GamesController.gradeGame);
 
 module.exports = router;

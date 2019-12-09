@@ -34,6 +34,65 @@ module.exports = {
             return response.redirect('/games');
         }
     },
+    /*
+     * grades the game
+     */
+    async gradeGame(request, response) {       
+        //retrieves what user answered
+        var vastaukset=request.body.check;
+        //because user migh not have clicked any checkboxes we check it
+        if(vastaukset=='undefined'){
+            vastaukset=[];
+        }
+        //because only one answer returns string instead of array we force it to an array
+        else if(typeof vastaukset == "string"){
+            vastaukset=[vastaukset];
+        }
+        else{
+
+        }
+
+        console.log(vastaukset);
+        //parse game id from url
+        var tid=request.url;
+        var id="";
+        for(var i=1;i<tid.length;i++){
+            id+=tid.charAt(i);
+        }
+        console.log(id);
+        try{
+            //set score to 1
+            var pisteet=0;
+            //retrieve game by id
+            const tiedot = await Questionnaire.findById(id).exec();
+            //retrieves the options to the questions
+            var ehdot=tiedot.questions[0].options;
+            console.log(ehdot);
+            console.log(ehdot.length);
+            //loops the options one answer at a time and when it finds the answers value from
+            //option list it checks it correctness and raises the score if the value is true.
+            for(var i=0;i<vastaukset.length;i++){
+                var vastaus=vastaukset[i];
+                for(var a=0;a<ehdot.length;a++){
+                    var ehto=ehdot[a].option;
+                    var oikeus=ehdot[a].correctness;
+                    console.log(ehto + " " + oikeus);
+                    if(ehto==vastaus){
+                        if(oikeus==true){
+                            pisteet++;
+                        }
+                    }
+                }
+            }
+            //TODO: Render the result page
+            console.log(pisteet);
+        }
+        catch(err){
+            console.error(err);
+            console.log('An error occured! Redirecting to /games');
+            return response.redirect('/games');
+        }
+    },
 
     /**
      * Returns list of games from Mongo database.
