@@ -346,5 +346,37 @@
                 ]
             }
         ]
+    },
+    {
+        "title": "Multiplication problems",
+        "submissions": 1,
+        "questions": [
+            {
+                "title": "Select the correct multiplications",
+                "maxPoints": 2,
+                "options": [
+                    {
+                        "option": "25 * 15 = 375",
+                        "correctness": true
+                    },
+                    {
+                        "option": "0 * 0 = 1",
+                        "correctness": false
+                    },
+                    {
+                        "option": "34 * 49 = 1667",
+                        "correctness": false
+                    },
+                    {
+                        "option": "4098 * 38 = 155724",
+                        "correctness": false
+                    },
+                    {
+                        "option": "7 * 4 = 28",
+                        "correctness": true
+                    }
+                ]
+            }
+        ]
     }
 ]
