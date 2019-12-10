@@ -34,60 +34,57 @@ module.exports = {
             return response.redirect('/games');
         }
     },
-    /*
-     * grades the game
+    /**
+     * Grades the game.
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
      */
-    async gradeGame(request, response) {       
-        //retrieves what user answered
-        var vastaukset=request.body.check;
-        //because user migh not have clicked any checkboxes we check it
-        if(vastaukset=='undefined'){
-            vastaukset=[];
-        }
-        //because only one answer returns string instead of array we force it to an array
-        else if(typeof vastaukset == "string"){
-            vastaukset=[vastaukset];
-        }
-        else{
+    async gradeGame(request, response) {
+        // Retrieves what user answered (might be undefined if no checkboxes were selected)
+        // and that kind of error will be catched (for now)
+        let answers = request.body.check;
 
-        }
-
-        console.log(vastaukset);
-        //parse game id from url
-        var tid=request.url;
-        var id="";
-        for(var i=1;i<tid.length;i++){
-            id+=tid.charAt(i);
-        }
-        console.log(id);
-        try{
-            //set score to 1
-            var pisteet=0;
-            //retrieve game by id
-            const tiedot = await Questionnaire.findById(id).exec();
-            //retrieves the options to the questions
-            var ehdot=tiedot.questions[0].options;
-            console.log(ehdot);
-            console.log(ehdot.length);
-            //loops the options one answer at a time and when it finds the answers value from
-            //option list it checks it correctness and raises the score if the value is true.
-            for(var i=0;i<vastaukset.length;i++){
-                var vastaus=vastaukset[i];
-                for(var a=0;a<ehdot.length;a++){
-                    var ehto=ehdot[a].option;
-                    var oikeus=ehdot[a].correctness;
-                    console.log(ehto + " " + oikeus);
-                    if(ehto==vastaus){
-                        if(oikeus==true){
-                            pisteet++;
+        // TODO: Better error handling in case of user trying to grade without choosing
+        // any options.
+        // TODO: Also, if the questionnaire contains more than 1 question, we need a loop
+        // to go through all questions and their correct answers and maxpoints.
+        // TODO: Also it could be useful to implement a grader model (see models/hello.js)
+        // where the actual grading happens so we can clean this function a lot.
+        try {
+            // Set initial score to 0
+            let points = 0;
+            // Retrieve game by id (retrieved from URL)
+            const game = await Questionnaire.findById(request.params.id)
+                .exec();
+            // Retrieves the options to the questions
+            let gameOptions = game.questions[0].options;
+            const maxPoints = game.questions[0].maxPoints;
+            console.log(gameOptions);
+            console.log(gameOptions.length);
+            // Loops the options one answer at a time and when it finds the answers value from
+            // option list it checks it correctness and raises the score if the value is true.
+            for (let i = 0; i < answers.length; i++) {
+                let answer = answers[i];
+                for (let a = 0; a < gameOptions.length; a++) {
+                    let option = gameOptions[a].option;
+                    let correctness = gameOptions[a].correctness;
+                    console.log(option + " " + correctness);
+                    if (option == answer) {
+                        if (correctness == true) {
+                            points++;
                         }
                     }
                 }
             }
-            //TODO: Render the result page
-            console.log(pisteet);
+            response.render('game/game-graded', {
+                points: points,
+                maxPoints: maxPoints,
+                status: 'graded',
+                description: 'Some description here',
+                title: 'Points awarded'
+            });
         }
-        catch(err){
+        catch (err) {
             console.error(err);
             console.log('An error occured! Redirecting to /games');
             return response.redirect('/games');
