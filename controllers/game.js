@@ -1,6 +1,7 @@
 'use strict';
 
 const Questionnaire = require('../models/questionnaire');
+const Grader = require('../models/gameGrader');
 
 /*
  * Tänne sisään Controllerin funktiot, joilla ohjataan peliä
@@ -23,8 +24,6 @@ module.exports = {
         try {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
-            console.log(game);
-            console.log(game.questions);
             response.render('game/game', { game });
         }
         // If game wasn't found with the given id, redirect back to /games
@@ -44,38 +43,19 @@ module.exports = {
         // and that kind of error will be catched (for now)
         let answers = request.body.check;
 
-        // TODO: Better error handling in case of user trying to grade without choosing
-        // any options.
-        // TODO: Also, if the questionnaire contains more than 1 question, we need a loop
-        // to go through all questions and their correct answers and maxpoints.
-        // TODO: Also it could be useful to implement a grader model (see models/hello.js)
-        // where the actual grading happens so we can clean this function a lot.
+        // TODO: Still problem with grading, because answers for questions aren't separated
+        // and if two questions have same option and they are choosed twice, total points
+        // counter increases by 2 instead of 1 and it messes the grading.
         try {
-            // Set initial score to 0
-            let points = 0;
             // Retrieve game by id (retrieved from URL)
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
-            // Retrieves the options to the questions
-            let gameOptions = game.questions[0].options;
-            const maxPoints = game.questions[0].maxPoints;
-            console.log(gameOptions);
-            console.log(gameOptions.length);
+            // Get total max points for all questions in questionnaire
+            const maxPoints = Grader.maxPoints(game);
+            console.log('Max points:', maxPoints);
             // Loops the options one answer at a time and when it finds the answers value from
             // option list it checks it correctness and raises the score if the value is true.
-            for (let i = 0; i < answers.length; i++) {
-                let answer = answers[i];
-                for (let a = 0; a < gameOptions.length; a++) {
-                    let option = gameOptions[a].option;
-                    let correctness = gameOptions[a].correctness;
-                    console.log(option + " " + correctness);
-                    if (option == answer) {
-                        if (correctness == true) {
-                            points++;
-                        }
-                    }
-                }
-            }
+            const points = Grader.grade(game, answers, maxPoints);
             response.render('game/game-graded', {
                 points: points,
                 maxPoints: maxPoints,
