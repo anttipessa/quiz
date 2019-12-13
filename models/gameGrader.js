@@ -36,17 +36,29 @@ module.exports = {
             }
         });
         */
+        let correct = 0;
+        let incorrect = 0;
 
         game.questions.forEach((question) => {
             question.options.forEach((option) => {
                 if (answers.includes(option.option)) {
                     if (option.correctness) {
-                        points++;
+                        correct++;
+                    }
+                    else {
+                        incorrect++;
                     }
                 }
             });
         });
-
+        console.log('Correct answers:', correct);
+        console.log('Incorrect answers:', incorrect);
+        if (incorrect > correct) {
+            points = 0;
+        }
+        else {
+            points = correct - incorrect;
+        }
         return points;
     },
 
