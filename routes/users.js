@@ -40,7 +40,6 @@ router.get('/logout', UserController.logout);
 // Show all users (for admins only)
 router.get('/', auth.ensureAdmin, UserController.listUsers);
 
-
 // Delete user (for admins only)
 router
     .route('/delete/:id([a-f0-9]{24})')
