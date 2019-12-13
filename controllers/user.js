@@ -5,6 +5,41 @@ const User = require('../models/user');
 
 module.exports = {
 
+
+    /**
+     * Returns a form for a user to login
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
+    login(request, response) {
+        response.render('user/login');
+
+    },
+
+    /**
+     * User logs out and gets redirected to a login page.
+     *
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
+    logout(request, response) {
+        request.logout();
+        request.flash('successMessage', 'You have logged out');
+        response.redirect('/users/login');
+
+
+    },
+
+    /**
+     * Returns a form for user to register
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
+    register(request, response) {
+        response.render('user/register');
+    },
+
+
     /**
      * Returns list of users
      * @param {Object} request is express request object
@@ -324,33 +359,4 @@ module.exports = {
         response.redirect('/users/me');
     },
 
-    /**
-     * Returns a form for a user to login
-     * @param {Object} request is express request object
-     * @param {Object} response is express response object
-     */
-    login(request, response) {
-        response.render('user/login');
-    },
-
-    /**
-     * User logs out and gets redirected to a login page.
-     *
-     * @param {Object} request is express request object
-     * @param {Object} response is express response object
-     */
-    logout(request, response) {
-        request.logout();
-        request.flash('successMessage', 'You have logged out');
-        response.redirect('/users/login');
-    },
-
-    /**
-     * Returns a form for user to register
-     * @param {Object} request is express request object
-     * @param {Object} response is express response object
-     */
-    register(request, response) {
-        response.render('user/register');
-    }
 };

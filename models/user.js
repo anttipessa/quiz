@@ -91,32 +91,33 @@ const userSchema = new Schema({
         set: (password) => {
             if (!password || password.length === 0) return password;
             // transparently encrypt password when setting it using:
+            // user.password = plainTextPassword;
             // setter must be synchronous or errors will happen
-            // TODO: hash password here with bcrypt, use length of 10,
-            //TODO: here;
+            return bcrypt.hashSync(password, 10);
         }
+    },
+    role: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        enum: schemaDefaults.role.values,
+        default: schemaDefaults.role.defaultValue
     }
-    //TODO: add role, trim, lowercase, and it should enumerate possible schemaDefults.role.values, and default to defaultValues
 });
 
 userSchema.virtual('isAdmin').get(function() {
-    // eslint-disable-next-line no-invalid-this
-    //TODO: add the admin check for the role of this object
-    // the helper function should return either true of false
+    // eslint-disable-next-line babel/no-invalid-this
+    return this.role === 'admin';
 });
 
 userSchema.virtual('isTeacher').get(function() {
-    // eslint-disable-next-line no-invalid-this
-    //TODO: add the teacher check for the role of this object
-    // Note that admin can be anything
-    // the helper function should return either true of false
+    // eslint-disable-next-line babel/no-invalid-this
+    return this.role === 'admin' || this.role === 'teacher';
 });
 
 userSchema.virtual('isStudent').get(function() {
-    // eslint-disable-next-line no-invalid-this
-    //TODO: add the teacher check for the role of this object
-    //Note that admin can be anything
-    // the helper function should return either true of false
+    // eslint-disable-next-line babel/no-invalid-this
+    return this.role === 'admin' || this.role === 'student';
 });
 
 userSchema.statics.getAvailableRoles = function() {

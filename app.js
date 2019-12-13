@@ -1,5 +1,6 @@
 'use strict';
 
+
 require('dotenv').config();
 const debug = require('debug')('bwa:app');
 const createError = require('http-errors');
@@ -26,10 +27,12 @@ const app = express();
 // connect to database
 const db = require('./models/db');
 db.connectDB(dbConfig);
+// require('./models/db')(dbConfig);
 
 // setup admin user
-// TODO: pass config with the right key to add admin user
-require('./setup/createusers') /*TODO: add here;*/;
+require('./setup/createusers')(config.get('admin')).then((msg) => {
+    debug(msg);
+});
 
 if (app.get('env') === 'development') {
     app.use(logger('dev'));
@@ -38,6 +41,8 @@ if (app.get('env') === 'development') {
     require('./setup/createdata')().then((msg) => {
         debug(msg);
     });
+
+
 }
 
 // trust reverse proxy headers
@@ -126,16 +131,15 @@ require('./router.js')(app);
 
 // catch 404 and forward to error handler
 // NOTE: this middleware must be defined after all other routes
-app.use(function (request, response, next) {
+app.use(function(request, response, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function (error, request, response, next) {
+app.use(function(error, request, response, next) {
     // set locals, only providing error in development
     response.locals.message = error.message;
-    response.locals.error =
-        request.app.get('env') === 'development' ? error : {};
+    response.locals.error = request.app.get('env') === 'development' ? error : {};
     response.locals.title = `${error.status || 500} ${error.message}`;
     response.locals.heading = `${request.method} ${request.url}`;
 
