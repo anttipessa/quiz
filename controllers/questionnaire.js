@@ -1,10 +1,14 @@
 'use strict';
 
+const Questionnaire = require('../models/questionnaire');
+
 module.exports = {
 
     async list(request, response) {
-        console.log('Management View: List');
-        response.end('List');
+        const games = await Questionnaire.find()
+            .sort('_id')
+            .exec();
+        response.render('management/exercises', { games })
     },
 
     async show(request, response) {
