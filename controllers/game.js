@@ -30,6 +30,10 @@ module.exports = {
         catch (err) {
             console.error(err);
             console.log('Redirecting to /games');
+            request.flash(
+                'errorMessage',
+                'No game was found with the given id.'
+            );
             return response.redirect('/games');
         }
     },
