@@ -82,7 +82,7 @@ module.exports = {
      */
     async listGames(request, response) {
         const games = await Questionnaire.find()
-            .sort('title')
+            .sort('_id')
             .exec();
         response.render('game/games', { games })
     }
