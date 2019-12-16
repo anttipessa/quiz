@@ -1,5 +1,21 @@
-<p style="font-weight: bold;">{{this.title}}</p>
-<p style="font-size: 0.9em;">Max points: {{this.maxPoints}}</p>
-{{#each options}}
-{{>option}}
-{{/each}}
+<h3 class="q3">Question {{@index}}</h3>
+<figure>
+    <figcaption>Title</figcaption>
+    <ul>
+        <li>{{this.title}}</li>
+    </ul>
+</figure>
+<figure>
+    <figcaption>Max points</figcaption>
+    <ul>
+        <li>{{this.maxPoints}}</li>
+    </ul>
+</figure>
+<figure>
+    <figcaption>Options</figcaption>
+    <ul>
+        {{#each options}}
+        {{>option}}
+        {{/each}}
+    </ul>
+</figure>

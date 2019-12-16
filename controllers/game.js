@@ -24,7 +24,10 @@ module.exports = {
         try {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
-            response.render('game/game', { game });
+            let rendered = {
+                game: JSON.stringify(game)
+            }
+            response.render('game/game', rendered);
         }
         // If game wasn't found with the given id, redirect back to /games
         catch (err) {
@@ -43,23 +46,22 @@ module.exports = {
      * @param {Object} response is express response object
      */
     async gradeGame(request, response) {
-        // Retrieves what user answered (might be undefined if no checkboxes were selected)
-        // and that kind of error will be catched (for now)
-        let answers = request.body.check;
+        // Retrieves what user answered (selected radio buttons)
+        let answers = [];
+        // Answers from different questions are put into their own arrays
+        for (let key in request.body) {
+            answers.push([request.body[key]])
+        }
 
-        // TODO: Still problem with grading, because answers for questions aren't separated
-        // and if two questions have same option and they are choosed twice, total points
-        // counter increases by 2 instead of 1 and it messes the grading.
         try {
             // Retrieve game by id (retrieved from URL)
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
             // Get total max points for all questions in questionnaire
             const maxPoints = Grader.maxPoints(game);
-            console.log('Max points:', maxPoints);
-            // Loops the options one answer at a time and when it finds the answers value from
-            // option list it checks it correctness and raises the score if the value is true.
+            // Get users score from the questionnaire
             const points = Grader.grade(game, answers, maxPoints);
+
             response.render('game/game-graded', {
                 points: points,
                 maxPoints: maxPoints,

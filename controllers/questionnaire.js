@@ -16,7 +16,7 @@ module.exports = {
         try {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
-            response.render('game/game', { game });
+            response.render('management/exercise', { game });
         }
         // If game wasn't found with the given id, redirect back to /questionnaires
         catch (err) {

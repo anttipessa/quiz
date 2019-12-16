@@ -1,25 +1,136 @@
-<div id="game" class="container">
-  <div class="row mt-5">
-    <div class="col-md-6 m-auto">
-      <div class="card">
-        <div class="card-header">
-          <h3 id="title" class="text-center mb-3">{{game.title}}</h3>
+<div id='game' class='container'>
+  <div class='row mt-5'>
+    <div class='col-md-6 m-auto'>
+      <div class='card'>
+        <div class='card-header'>
+          <h3 id='title' class='text-center mb-3'></h3>
         </div>
-        <div class="card-body">
+        <div class='card-body'>
           {{>messages}}
-          <h4 class="instructions text-left mb-2">Instructions</h4>
+          <h4 class='instructions text-left mb-2'>Instructions</h4>
           <p>
-            Read the questions carefully and choose the right answer.
+            Read the question carefully and choose the right answer.
           </p>
           <hr>
-          <form method="POST">
-            <div class="form-group">
-              {{>questions}}
+          <div class='quiz-container'>
+            <div id='quiz'></div>
+          </div>
+
+          <form method='POST'>
+            <div id='submitForm' class="form-group">
             </div>
-            <button id="grade" type="submit" class="btn btn-primary">Grade</button>
+            <button id='previous' type="button" class='btn btn-secondary'>Previous</button>
+            <button id='next' type="button" class='btn btn-secondary'>Next</button>
+            <button id='grade' type='submit' class='btn btn-primary'>Grade</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  // Access the game-object that comes from response.render
+  let game = {{{ game }}}
+
+  function buildQuiz() {
+    const output = [];
+
+    game.questions.forEach((currentQuestion, questionNumber) => {
+      const answers = [];
+
+      currentQuestion.options.forEach(option => {
+        answers.push(
+          `<label>
+            <input type='radio' name='question${questionNumber}'
+             value='${option.option}'> ${option.option}
+           </label>`
+        );
+      })
+
+      output.push(
+        `<div class='slide'>
+             <div class='question'> ${currentQuestion.title} </div>
+             <div class='answers'> ${answers.join('')} </div>
+           </div>`
+      );
+    });
+    // Join output-list as a string into the HTML page
+    quizContainer.innerHTML = output.join('');
+  }
+
+  function showSlide(n) {
+    slides[currentSlide].classList.remove('active-slide');
+    slides[n].classList.add('active-slide');
+    currentSlide = n;
+
+    // On the first question (only) we hide previous-button
+    if (currentSlide === 0) {
+      previousButton.style.display = 'none';
+    }
+    else {
+      previousButton.style.display = 'inline-block';
+    }
+    // On the last question (only) we make grade-button visible and hide next-button
+    if (currentSlide === slides.length - 1) {
+      nextButton.style.display = 'none';
+      submitButton.style.display = 'inline-block';
+    }
+    else {
+      nextButton.style.display = 'inline-block';
+      submitButton.style.display = 'none';
+    }
+  }
+
+  function showNextSlide() {
+    showSlide(currentSlide + 1);
+  }
+
+  function showPreviousSlide() {
+    showSlide(currentSlide - 1);
+  }
+
+  function updateForm() {
+    const answerContainers = quizContainer.querySelectorAll(".answers");
+
+    // Go through the questions
+    game.questions.forEach((currentQuestion, questionNumber) => {
+      // Find the answer user selected for the question (might also be empty)
+      const answerContainer = answerContainers[questionNumber];
+      const selector = `input[name=question${questionNumber}]:checked`;
+      const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+      // Create a hidden checked radio button inside the form, so that when submitted
+      // the data is passed to controllers/game.js gradeGame-method
+      let node = document.createElement('INPUT')
+      node.setAttribute('type', 'radio')
+      node.setAttribute('name', `question${questionNumber}`)
+      node.setAttribute('value', userAnswer)
+      node.setAttribute('checked', 'checked')
+      node.classList.add('hiddenButton')
+      form.appendChild(node)
+    });
+  }
+
+  const quizContainer = document.getElementById('quiz');
+  const resultsContainer = document.getElementById('results');
+  const submitButton = document.getElementById('grade');
+  const form = document.getElementById('submitForm');
+  const title = document.getElementById('title')
+  const titleText = document.createTextNode(game.title)
+  title.appendChild(titleText)
+
+  buildQuiz();
+
+  const previousButton = document.getElementById('previous');
+  const nextButton = document.getElementById('next');
+  const slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  showSlide(0);
+
+  // Set event-listeners for buttons
+  previousButton.addEventListener('click', showPreviousSlide);
+  nextButton.addEventListener('click', showNextSlide);
+  submitButton.addEventListener('click', updateForm);
+
+</script>
