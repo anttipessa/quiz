@@ -1,9 +1,5 @@
-/*
- * Onko mahdollista saada tämä js-tiedosto linkitettyä views/game/game.hbs
- * tiedoston sriptiin, siten, että koodi luettaisiin täältä eikä olisi koodattu sinne?
- */
-// let game = {{{ game }}}
-console.log(game)
+// Access the game object thats passed from handlebar-document
+let game = JSON.parse(document.currentScript.getAttribute('game'))
 
 function buildQuiz() {
     const output = [];
@@ -15,9 +11,9 @@ function buildQuiz() {
         currentQuestion.options.forEach(option => {
             answers.push(
                 `<label>
-            <input type='radio' name='question${questionNumber}'
-             value='${option.option}'> ${option.option}
-           </label>`
+                 <input type='radio' name='question${questionNumber}'
+                  value='${option.option}'> ${option.option}
+                 </label>`
             );
         })
 
@@ -90,8 +86,6 @@ function updateForm() {
         const answerContainer = answerContainers[questionNumber];
         const selector = `input[name=question${questionNumber}]:checked`;
         const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-        console.log(selector)
-        console.log(userAnswer)
         let node = document.createElement('INPUT')
         node.setAttribute('type', 'radio')
         node.setAttribute('name', `question${questionNumber}`)
