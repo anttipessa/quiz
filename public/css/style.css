@@ -91,14 +91,14 @@ textarea {
 
 .answers {
     margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: left;
     display: inline-block;
 }
 
 .answers label{
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .slide{

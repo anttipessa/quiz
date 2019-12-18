@@ -1,5 +1,4 @@
-// Access the game object thats passed from handlebar-document
-let game = JSON.parse(document.currentScript.getAttribute('game'))
+'use strict'
 
 function buildQuiz() {
     const output = [];
@@ -56,7 +55,6 @@ function showPreviousSlide() {
     showSlide(currentSlide - 1);
 }
 const quizContainer = document.getElementById('quiz');
-const resultsContainer = document.getElementById('results');
 const submitButton = document.getElementById('grade');
 const form = document.getElementById('submitForm');
 const title = document.getElementById('title')

@@ -28,5 +28,9 @@
     </div>
   </div>
 </div>
-<script src="/js/quizgame.js" game="{{game}}">
+<script>
+  // Access the game object thats passed from response.rendering
+  // we make it a global variable, so that it can be used in our other script
+  var game = {{{ game }}}
 </script>
+<script src="/js/quizgame.js"></script>

@@ -94,6 +94,100 @@
         ]
     },
     {
+        "title": "Math Quiz (easy)",
+        "submissions": 1,
+        "questions": [
+            {
+                "title": "What is the next number in this sequence: { 26, 35, 44, __ }?",
+                "maxPoints": 1,
+                "options": [
+                    {
+                        "option": "51",
+                        "correctness": false
+                    },
+                    {
+                        "option": "49",
+                        "correctness": false
+                    },
+                    {
+                        "option": "53",
+                        "correctness": true
+                    },
+                    {
+                        "option": "55",
+                        "correctness": false
+                    }
+                ]
+            },
+            {
+                "title": "Max started with 4 kiwis and added 3 more every week. How many weeks him takes to reach 16?",
+                "maxPoints": 1,
+                "options": [
+                    {
+                        "option": "4",
+                        "correctness": true
+                    },
+                    {
+                        "option": "3",
+                        "correctness": false
+                    },
+                    {
+                        "option": "2",
+                        "correctness": false
+                    },
+                    {
+                        "option": "5",
+                        "correctness": false
+                    }
+                ]
+            },
+            {
+                "title": "What is the next number in this sequence: { 41, 44, 48, 53, __ }?",
+                "maxPoints": 1,
+                "options": [
+                    {
+                        "option": "59",
+                        "correctness": true
+                    },
+                    {
+                        "option": "56",
+                        "correctness": false
+                    },
+                    {
+                        "option": "57",
+                        "correctness": false
+                    },
+                    {
+                        "option": "58",
+                        "correctness": false
+                    }
+                ]
+            },
+            {
+                "title": "Given that 95 × 2 = 190, what is the value of 92 + 95?",
+                "maxPoints": 1,
+                "options": [
+                    {
+                        "option": "191",
+                        "correctness": false
+                    },
+                    {
+                        "option": "189",
+                        "correctness": false
+                    },
+                    {
+                        "option": "188",
+                        "correctness": false
+                    },
+                    {
+                        "option": "187",
+                        "correctness": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "title": "Count without a calculator",
         "submissions": 1,
         "questions": [
