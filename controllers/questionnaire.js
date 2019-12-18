@@ -36,10 +36,38 @@ module.exports = {
 
     async update(request, response) {
         console.log('Management View: Update');
+        // todo csrf token, error handling etc
+        const game = await Questionnaire.findById(request.params.id).exec();
+        response.render('management/exercise_edit', {
+            game
+        });
     },
 
     async processUpdate(request, response) {
         console.log('Management View: Process Update');
+        // todo csrf token, error handling, validation? 
+        const { option } = request.body;
+        const game = await Questionnaire.findById(request.params.id).exec();
+
+        let i = 0;
+        game.questions.forEach((question) => {
+            console.log(question)
+            question.options.forEach((opt) => {
+                opt.option = option[i]
+                i++;
+            });
+
+        });
+        await game.save();
+
+        request.flash(
+            'successMessage',
+            'The information of this quiz is updated successfully'
+        );
+
+        response.redirect('/questionnaires');
+
+
     },
 
     async delete(request, response) {
