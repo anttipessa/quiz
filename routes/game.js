@@ -6,6 +6,8 @@ const GamesController = require('../controllers/game');
 
 router.get('/', GamesController.listGames);
 
+router.get('/data/:id', GamesController.getData)
+
 router
   .route('/:id')
   .get(GamesController.launchGame)

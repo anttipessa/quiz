@@ -8,6 +8,32 @@ const Grader = require('../models/gameGrader');
  */
 module.exports = {
 
+    /**
+     * Get game data, which is needed in quiz game and we don't need to 
+     * pass game variable through handlebars so that the data would be visible
+     * in page source.
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
+    async getData(request, response) {
+        try {
+            const game = await Questionnaire.findById(request.params.id)
+                .exec();
+            response.set('Content-Type', 'application/json');
+            response.end(JSON.stringify(game));
+        }
+        // If game wasn't found with the given id, redirect back to /games
+        catch (err) {
+            console.error(err);
+            console.log('Redirecting to /games');
+            request.flash(
+                'errorMessage',
+                'No game was found with the given id.'
+            );
+            return response.redirect('/games');
+        }
+    },
+
     /** 
      * Returns a game with specific id.
      * @param {Object} request is express request object

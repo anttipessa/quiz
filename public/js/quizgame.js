@@ -1,5 +1,31 @@
 'use strict'
 
+loadGameData();
+
+// Initializing some variables
+let game, title, titleText, slides, currentSlide;
+
+const quizContainer = document.getElementById('quiz');
+const submitButton = document.getElementById('grade');
+const previousButton = document.getElementById('previous');
+const nextButton = document.getElementById('next');
+const form = document.getElementById('submitForm');
+
+previousButton.addEventListener('click', showPreviousSlide);
+nextButton.addEventListener('click', showNextSlide);
+submitButton.addEventListener('click', updateForm);
+
+async function loadGameData() {
+    const data_uri = `/games/data/${document.location.pathname.split('/').pop()}`;
+    try {
+        const response = await fetch(data_uri);
+        game = await handleResponse(response);
+        buildQuiz();
+    } catch (error) {
+        handleError(error + " " + data_uri);
+    }
+}
+
 function buildQuiz() {
     const output = [];
 
@@ -23,8 +49,18 @@ function buildQuiz() {
            </div>`
         );
     });
+
     // finally combine our output list into one string of HTML and put it on the page
     quizContainer.innerHTML = output.join('');
+
+    title = document.getElementById('title')
+    titleText = document.createTextNode(game.title)
+    title.appendChild(titleText)
+
+    slides = document.querySelectorAll('.slide');
+    currentSlide = 0;
+
+    showSlide(0);
 }
 
 function showSlide(n) {
@@ -54,26 +90,6 @@ function showNextSlide() {
 function showPreviousSlide() {
     showSlide(currentSlide - 1);
 }
-const quizContainer = document.getElementById('quiz');
-const submitButton = document.getElementById('grade');
-const form = document.getElementById('submitForm');
-const title = document.getElementById('title')
-const titleText = document.createTextNode(game.title)
-title.appendChild(titleText)
-
-// display quiz right away
-buildQuiz();
-
-const previousButton = document.getElementById('previous');
-const nextButton = document.getElementById('next');
-const slides = document.querySelectorAll('.slide');
-let currentSlide = 0;
-
-showSlide(0);
-
-previousButton.addEventListener('click', showPreviousSlide);
-nextButton.addEventListener('click', showNextSlide);
-submitButton.addEventListener('click', updateForm);
 
 function updateForm() {
     const answerContainers = quizContainer.querySelectorAll(".answers");
@@ -92,4 +108,25 @@ function updateForm() {
         node.classList.add('hiddenButton')
         form.appendChild(node)
     });
+}
+
+async function handleResponse(response) {
+    const contentType = response.headers.get('content-type');
+
+    if (!contentType.includes('application/json')) {
+        throw new Error(`Sorry, content-type '${contentType}' not supported`);
+    }
+
+    if (!response.ok) {
+        return Promise.reject({
+            status: response.status,
+            statusText: response.statusText
+        });
+    }
+
+    return await response.json();
+}
+
+function handleError(error) {
+    throw new Error('Error occurred!')
 }
