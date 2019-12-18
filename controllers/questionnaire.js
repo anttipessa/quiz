@@ -27,7 +27,7 @@ module.exports = {
     },
 
     async create(request, response) {
-        console.log('Management View: Create');
+        response.render('management/new')
     },
 
     async processCreate(request, response) {
