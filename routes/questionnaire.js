@@ -19,11 +19,14 @@ router.get('/new', QuestionnaireController.create);
 router.post('/new', QuestionnaireController.processCreate);
 
 // Update documents
+router.route('/edit/:id([a-f0-9]{24})').all( auth.ensureAdmin, csrfProtection);
 router.get('/edit/:id([a-f0-9]{24})', QuestionnaireController.update);
 router.post('/edit/:id([a-f0-9]{24})', QuestionnaireController.processUpdate);
 
 // Delete documents
+router.route('/delete/:id([a-f0-9]{24})').all( auth.ensureAdmin, csrfProtection);
 router.get('/delete/:id([a-f0-9]{24})', QuestionnaireController.delete);
 router.post('/delete/:id([a-f0-9]{24})', QuestionnaireController.processDelete);
 
+    
 module.exports = router;

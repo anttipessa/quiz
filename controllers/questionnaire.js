@@ -36,10 +36,10 @@ module.exports = {
 
     async update(request, response) {
         console.log('Management View: Update');
-        // todo csrf token, error handling etc
         const game = await Questionnaire.findById(request.params.id).exec();
         response.render('management/exercise_edit', {
-            game
+            game,
+            csrfToken: request.csrfToken()
         });
     },
 
@@ -73,8 +73,18 @@ module.exports = {
     async delete(request, response) {
         console.log('Management View: Delete');
         const game = await Questionnaire.findById(request.params.id).exec();
+
+        if (!game) {
+            request.flash(
+                'errorMessage',
+                `Game not found (id: ${request.params.id})`
+            );
+            return response.redirect('/questionnaires');
+        }
+
         response.render('partials/exercise_delete', {
-            game
+            game,
+            csrfToken: request.csrfToken()
         });
     },
 

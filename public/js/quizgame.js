@@ -29,6 +29,7 @@ async function loadGameData() {
 function buildQuiz() {
     const output = [];
     let qnumber = 0;
+    
     // for each question...
     game.questions.forEach((currentQuestion, questionNumber) => {
         const answers = [];
