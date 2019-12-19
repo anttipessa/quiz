@@ -28,11 +28,11 @@ async function loadGameData() {
 
 function buildQuiz() {
     const output = [];
-
+    let qnumber = 0;
     // for each question...
     game.questions.forEach((currentQuestion, questionNumber) => {
         const answers = [];
-
+        qnumber++;
         currentQuestion.options.forEach(option => {
             answers.push(
                 `<label>
@@ -41,12 +41,11 @@ function buildQuiz() {
                  </label>`
             );
         })
-
         output.push(
             `<div class='slide'>
-             <div class='question'> ${currentQuestion.title} </div>
+             <div class='question'> ${currentQuestion.title} ${qnumber}/${game.questions.length}</div>
              <div class='answers'> ${answers.join('')} </div>
-           </div>`
+           </div>`    
         );
     });
 
@@ -56,10 +55,8 @@ function buildQuiz() {
     title = document.getElementById('title')
     titleText = document.createTextNode(game.title)
     title.appendChild(titleText)
-
     slides = document.querySelectorAll('.slide');
     currentSlide = 0;
-
     showSlide(0);
 }
 
