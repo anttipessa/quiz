@@ -64,9 +64,13 @@ TODO: describe your work
 
 "Create a short document that describes how your coursework handles these requirements." Ja erikseen maininta sitten että pitää selvittää miten se softa ajetaan.
 
+The game is a quiz, where you select one answer per question, then you click "Next" button and you're given a new question, you can go back to previous question with the “Previous” button. After you have answered all the questions, grade button appears, and clicking it scores your quiz. The quizzes can be accessed from the navigation bar or through the path /games.
+
 ## Management view
 
 TODO: describe your work
+
+Management view gives the admin and teacher the ability to view, edit, delete and search quizzes. Clicking "Show" displays the selected quiz, with ability to see which answer is correct and how many points each question gives. Clicking "Edit" lets you edit the fields in the selected quiz and saving the new values to the database. Clicking "Delete", opens a view from where you can delete the selected quiz. The search function filters the shown quizzes based on the given input. Management view can be accessed from the navigation bar or through the path /questionnaires.
 
 ## Tests and documentation
 
