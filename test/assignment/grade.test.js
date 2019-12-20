@@ -42,7 +42,7 @@ const testgame1 =
                     }
                 ]
             }
-]
+        ]
     }];
 const testgame2 =
     [{
@@ -79,7 +79,7 @@ const testgame3 =
                     }
                 ]
             }
-]
+        ]
     }];
 const emptyAnswer = [];
 
