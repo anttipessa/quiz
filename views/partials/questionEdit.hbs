@@ -1,0 +1,21 @@
+<h3 class="q3">Question {{@index}}</h3>
+<figure>
+    <figcaption>Title</figcaption>
+    <ul>
+        <li><input type="text" name="title" class="form-control" value="{{this.title}}"></li>
+    </ul>
+</figure>
+<figure>
+    <figcaption>Max points</figcaption>
+    <ul>
+        <li>{{this.maxPoints}}</li>
+    </ul>
+</figure>
+<figure>
+    <figcaption>Options</figcaption>
+    <ul>
+        {{#each options}}
+        {{>optionEdit}}
+        {{/each}}
+    </ul>
+</figure>

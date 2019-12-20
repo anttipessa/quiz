@@ -1,0 +1,11 @@
+<div class="form-group">
+    <li><input type="text" name="option" class="form-control" value="{{this.option}}"></li>
+    <label for=" correctness">Correctness: </label>
+    {{#if this.correctness}}
+    <input type="radio" name="correctness{{this._id}}" value="true" autocomplete="off" checked="checked"> True
+    <input type="radio" name="correctness{{this._id}}" value="false" autocomplete="off"> False
+    {{else}}
+    <input type="radio" name="correctness{{this._id}}" value="true" autocomplete="off"> True
+    <input type="radio" name="correctness{{this._id}}" value="false" autocomplete="off" checked="checked"> False
+    {{/if}}
+</div>

@@ -45,29 +45,45 @@ module.exports = {
 
     async processUpdate(request, response) {
         console.log('Management View: Process Update');
-        // todo csrf token, error handling, validation? 
-        const { option } = request.body;
+        // todo csrf token, error handling, validation?
+        const { option, title } = request.body;
+        let correctnessList = [];
+        for (let key in request.body) {
+            // Save true / false options to a list
+            if (key !== 'option' && key !== '_csrf' && key !== 'title') {
+                correctnessList.push(request.body[key])
+            }
+        }
         const game = await Questionnaire.findById(request.params.id).exec();
 
         let i = 0;
+        let j = 0;
         game.questions.forEach((question) => {
-            console.log(question)
+            question.title = title[j];
             question.options.forEach((opt) => {
-                opt.option = option[i]
+                opt.option = option[i];
+                opt.correctness = correctnessList[i];
                 i++;
             });
-
+            j++;
         });
-        await game.save();
 
-        request.flash(
-            'successMessage',
-            'The information of this quiz is updated successfully'
-        );
+        try {
+            await game.save();
 
+            request.flash(
+                'successMessage',
+                'The information of this quiz is updated successfully'
+            );
+        }
+        // If validation errors happen
+        catch (err) {
+            request.flash(
+                'errorMessage',
+                'Failed to update quiz information'
+            );
+        }
         response.redirect('/questionnaires');
-
-
     },
 
     async delete(request, response) {
