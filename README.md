@@ -56,8 +56,6 @@ for high-school students, especially for the domains of mathematics and computer
 
 TODO: add your files here and give a short description
 
-Group console.log(): Antti Pessa, Henri Hakkarainen and Niki Väänänen
-
 ## Game
 
 TODO: describe your work
@@ -75,6 +73,8 @@ Management view gives the admin and teacher the ability to view, edit, delete an
 ## Tests and documentation
 
 TODO: describe your work
+
+Our tests will focus on the management view and testing the game.
 
 ## Security concerns
 
