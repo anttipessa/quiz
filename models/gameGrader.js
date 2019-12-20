@@ -11,10 +11,8 @@ module.exports = {
         let idx = 0;
         game.questions.forEach((question) => {
             question.options.forEach((option) => {
-                if (answers[idx].includes(option.option)) {
-                    if (option.correctness) {
-                        points++;
-                    }
+                if (answers[idx].includes(option.option) && option.correctness) {
+                    points++;
                 }
             });
             idx++;
@@ -35,4 +33,4 @@ module.exports = {
 
         return maxPoints;
     }
-}
+};

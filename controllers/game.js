@@ -50,9 +50,9 @@ module.exports = {
         try {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
-            let rendered = {
+            const rendered = {
                 game: JSON.stringify(game)
-            }
+            };
             response.render('game/game', rendered);
         }
         // If game wasn't found with the given id, redirect back to /games
@@ -73,10 +73,10 @@ module.exports = {
      */
     async gradeGame(request, response) {
         // Retrieves what user answered (selected radio buttons)
-        let answers = [];
+        const answers = [];
         // Answers from different questions are put into their own arrays
-        for (let key in request.body) {
-            answers.push([request.body[key]])
+        for (const key in request.body) {
+            answers.push([request.body[key]]);
         }
 
         try {
@@ -95,8 +95,7 @@ module.exports = {
                 description: 'Some description here',
                 title: 'Points awarded'
             });
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
             console.log('An error occured! Redirecting to /games');
             return response.redirect('/games');
@@ -112,7 +111,7 @@ module.exports = {
         const games = await Questionnaire.find()
             .sort('_id')
             .exec();
-        response.render('game/games', { games })
+        response.render('game/games', { games });
     }
 
 };

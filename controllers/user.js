@@ -357,6 +357,6 @@ module.exports = {
         );
 
         response.redirect('/users/me');
-    },
+    }
 
 };

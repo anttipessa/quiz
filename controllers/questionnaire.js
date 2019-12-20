@@ -8,7 +8,7 @@ module.exports = {
         const games = await Questionnaire.find()
             .sort('_id')
             .exec();
-        response.render('management/exercises', { games })
+        response.render('management/exercises', { games });
     },
 
     async show(request, response) {
@@ -27,7 +27,7 @@ module.exports = {
     },
 
     async create(request, response) {
-        response.render('management/new')
+        response.render('management/new');
     },
 
     async processCreate(request, response) {
@@ -47,11 +47,11 @@ module.exports = {
         console.log('Management View: Process Update');
         // todo csrf token, error handling, validation?
         const { option, title } = request.body;
-        let correctnessList = [];
-        for (let key in request.body) {
+        const correctnessList = [];
+        for (const key in request.body) {
             // Save true / false options to a list
             if (key !== 'option' && key !== '_csrf' && key !== 'title') {
-                correctnessList.push(request.body[key])
+                correctnessList.push(request.body[key]);
             }
         }
         const game = await Questionnaire.findById(request.params.id).exec();
@@ -73,7 +73,7 @@ module.exports = {
 
             request.flash(
                 'successMessage',
-                'The information of this quiz is updated successfully'
+                'The information of this quiz was updated successfully.'
             );
         }
         // If validation errors happen
@@ -109,5 +109,5 @@ module.exports = {
         await Questionnaire.findByIdAndDelete(request.params.id).exec();
         request.flash('successMessage', 'Questionnaire removed successfully.');
         response.redirect('/questionnaires');
-    },
-}
+    }
+};

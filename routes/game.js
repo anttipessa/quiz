@@ -6,11 +6,11 @@ const GamesController = require('../controllers/game');
 
 router.get('/', GamesController.listGames);
 
-router.get('/data/:id', GamesController.getData)
+router.get('/data/:id', GamesController.getData);
 
 router
-  .route('/:id')
-  .get(GamesController.launchGame)
-  .post(GamesController.gradeGame);
+    .route('/:id')
+    .get(GamesController.launchGame)
+    .post(GamesController.gradeGame);
 
 module.exports = router;
