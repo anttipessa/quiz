@@ -27,7 +27,7 @@ module.exports = {
 
         // There are no questions in the game
         if (!('questions' in game)) {
-            return points;
+            return maxPoints;
         }
         game.questions.forEach((question) => {
             maxPoints += question.maxPoints;

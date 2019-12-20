@@ -8,10 +8,9 @@ chai.use(chaiHttp);
 const app = require('../../app');
 const grader = require('../../models/gameGrader');
 
-const admin = config.get('admin');
-
-const testgame1=
-[{"title": "Multiplication problems",
+const testgame1 =
+    [{
+        "title": "Multiplication problems",
         "submissions": 1,
         "questions": [
             {
@@ -38,13 +37,17 @@ const testgame1=
                         "option": "7 * 4 = 28",
                         "correctness": true
                     }
-]}]}];
-const testgame2=
-[{"title": "Multiplication problems",
+                ]
+            }]
+    }];
+const testgame2 =
+    [{
+        "title": "Multiplication problems",
         "submissions": 1
-}];
-const testgame3=
-[{"title": "Multiplication problems",
+    }];
+const testgame3 =
+    [{
+        "title": "Multiplication problems",
         "submissions": 1,
         "questions": [
             {
@@ -70,21 +73,28 @@ const testgame3=
                         "option": "7 * 4 = 28",
                         "correctness": true
                     }
-]}]}];
-const emptyAnswer=[];
+                ]
+            }]
+    }];
+const emptyAnswer = [];
 
 
-describe('/gameGrading', function() {
-    it('should grade without answers', async function() {
-        const points=grader.grade(testgame1, emptyAnswer);
+describe('/gameGrading', function () {
+    it('should grade without answers', async function () {
+        let points = grader.grade(testgame1, emptyAnswer);
         expect(points).to.be.equal(0);
     });
-    it('should grade a game without questions', async function() {
-        const points=grader.grade(testgame2, emptyAnswer);
+    it('should grade a game without questions', async function () {
+        let points = grader.grade(testgame2, emptyAnswer);
         expect(points).to.be.equal(0);
     });
-    it('should not a game grade without maxpoints', async function() {
-        
+    it('should get maxpoints with no questions', async function () {
+        let maxpoints = grader.maxPoints(testgame2);
+        expect(maxpoints).to.be.equal(0);
+    });
+    it('should grade without maxpoints', async function () {
+        let maxpoints = grader.maxPoints(testgame3);
+        expect(maxpoints).to.be.equal(0);
     });
 
 });
