@@ -23,7 +23,7 @@ describe('/users', function() {
             // remove all users from the database and re-create admin user
             await User.deleteMany({});
 
-            const userData = {...admin, role: 'admin'};
+            const userData = { ...admin, role: 'admin' };
             const user = new User(userData);
             await user.save();
         } catch (err) {

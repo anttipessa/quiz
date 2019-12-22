@@ -15,6 +15,9 @@ const User = require('../../models/user');
 
 const loginUrl = '/users/login';
 const mview = '/questionnaires';
+const games = '/games';
+const testid = '/questionnaires/5dffbfc3e435d617c7419acf';
+const edittest = '/questionnaires/edit/5dffbb52da97f3170768e853';
 
 describe('Game: A+ protocol', function() {
     let request;
@@ -37,30 +40,69 @@ describe('Game: A+ protocol', function() {
     describe('/questionnaires', function() {
 
         let payload;
+        let editload;
 
         beforeEach(function() {
             request = chai.request.agent(app);
             // create a new copy of admin for each test
             payload = { ...admin };
+            editload = {
+                title: 'Changing the title here',
+                option: 'Newoption'
+            };
             delete payload.name;
             delete payload.role;
-
-            // admin is logged in before every test
-            request
-                .post(loginUrl)
-                .type('form')
-                .send(payload);
         });
 
         afterEach(function() {
             request.close();
         });
 
-        it('It should allow admin user to access /questionnaires', async function() {
+
+        it('should allow admin access to management view', async function() {
+            await request
+                .post(loginUrl)
+                .type('form')
+                .send(payload);
             const response = await request
-                .post(mview);
+                .get(mview);
+            expect(response).to.have.status(200);
         });
 
+        it('should not allow unauthenticated user access to management view', async function() {
+            const response = await request
+                .get(mview);
+            expect(response).to.redirectTo(/\/users\/login$/);
+        });
+
+        // how to get a questionnaire id? to test show/edit/delete? 
+        it('should allow admin to view a game in management view', async function() {
+            await request
+                .post(loginUrl)
+                .type('form')
+                .send(payload);
+            const response = await request
+                .get(testid);
+            expect(response).to.have.status(200);
+        });
+
+        it('should not allow unauthenticated user to view a game in management view', async function() {
+            const response = await request
+                .get(testid);
+            expect(response).to.redirectTo(/\/users\/login$/);
+        });
+
+        it('should allow admin to edit a game in management view', async function() {
+            await request
+                .post(loginUrl)
+                .type('form')
+                .send(payload);
+            const response = await request
+                .post(edittest)
+                .type('form')
+                .send(editload);
+            expect(response).to.redirectTo(mview);
+        });
 
         it('C: create operation available');
 

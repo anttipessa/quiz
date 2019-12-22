@@ -32,8 +32,9 @@ module.exports = {
 
     async processCreate(request, response) {
         console.log('Management View: Process Create');
-        console.log(request.body)
-        response.redirect('/questionnaires')
+        console.log(request.body);
+        response.redirect('/questionnaires');
+
     },
 
     async update(request, response) {
@@ -58,31 +59,19 @@ module.exports = {
         }
         const game = await Questionnaire.findById(request.params.id).exec();
 
-        let errorMsg = 'Failed to update quiz information';
-        try {
-            let i = 0;
-            let j = 0;
-            game.questions.forEach((question) => {
-                question.title = title[j];
-                question.options.forEach((opt) => {
-                    opt.option = option[i];
-                    opt.correctness = correctnessList[i];
-                    i++;
-                });
-                let trueCounter = 0;
-                // We wanna check that a single question doesn't have more than
-                // one correct option checked.
-                question.options.forEach((opt) => {
-                    if (opt.correctness) {
-                        trueCounter += 1;
-                        if (trueCounter > 1) {
-                            errorMsg = 'Question can have only 1 correct option'
-                            throw new Error();
-                        }
-                    }
-                });
-                j++;
+        let i = 0;
+        let j = 0;
+        game.questions.forEach((question) => {
+            question.title = title[j];
+            question.options.forEach((opt) => {
+                opt.option = option[i];
+                opt.correctness = correctnessList[i];
+                i++;
             });
+            j++;
+        });
+
+        try {
             await game.save();
 
             request.flash(
@@ -94,7 +83,7 @@ module.exports = {
         catch (err) {
             request.flash(
                 'errorMessage',
-                errorMsg
+                'Failed to update quiz information'
             );
         }
         response.redirect('/questionnaires');
