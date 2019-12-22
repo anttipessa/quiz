@@ -21,6 +21,7 @@ for high-school students, especially for the domains of mathematics and computer
 ```
 .
 ├── app.js                  --> express app
+├── router.js               --> main router that setups other routes
 ├── index.js                --> bwa app
 ├── package.json            --> app info and dependencies
 ├── controllers             --> controllers (handle e.g. routing)
@@ -68,15 +69,21 @@ TODO: add your files here and give a short description
 
 TODO: describe your work
 
-"Create a short document that describes how your coursework handles these requirements." Ja erikseen maininta sitten että pitää selvittää miten se softa ajetaan.
+"Create a short document that describes how your coursework handles these requirements."
 
-The game is a quiz, where you select one answer per question, then you click "Next" button and you're given a new question, you can go back to previous question with the “Previous” button. After you have answered all the questions, grade button appears, and clicking it scores your quiz. The quizzes can be accessed from the navigation bar or through the path /games.
+The game is a quiz, where you select one answer per question and you can move to next question by clicking the "Next"-button. You can also go back to previous questions with the “Previous”-button. After you have answered all the questions, a grade button appears and clicking it automatically scores your quiz and shows the final score. The quizzes can be accessed from the navigation bar or through the path /games.
 
 ## Management view
 
 TODO: describe your work
 
-Management view gives the admin and teacher the ability to view, edit, delete and search quizzes. Clicking "Show" displays the selected quiz, with ability to see which answer is correct and how many points each question gives. Clicking "Edit" lets you edit the fields in the selected quiz and saving the new values to the database. Clicking "Delete", opens a view from where you can delete the selected quiz. The search function filters the shown quizzes based on the given input. Management view can be accessed from the navigation bar or through the path /questionnaires.
+Management view gives the admin and teacher the ability to create, view, edit, delete (CRUD) and also search quizzes from the list of all quizzes.
+- (C) Clicking "Create.." displays a view where you can create a new quiz. Quiz is given a title and the amount of max submissions and then it can be given multiple different questions. More questions are added by clicking the "Add question"-button. Each question must be given at least two different options and to them are given a true/false value by the correctness of the option. More than two options can be added to a question by clicking the "Add option"-button. However, maximum of five (5) options can be given to a single question to keep the quiz-game view in control.
+- (R) Clicking "Show" displays the selected quiz, with ability to see which answer is correct and how many points each question gives.
+- (U) Clicking "Edit" lets you edit the fields in the selected quiz and save the modified values to the database.
+- (D) Clicking "Delete", opens a view from where you can delete the selected quiz.
+
+The search function filters the shown quizzes based on the given input. Management view can be accessed from the navigation bar or through the path /questionnaires.
 
 ## Tests and documentation
 
