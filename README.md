@@ -90,6 +90,20 @@ TODO: list the security threats represented in the course slides.
 Document how your application protects against the threats.
 You are also free to add more security threats + protection here, if you will.
 
+NoSQL Injections 
+todo?
+
+Brute-force attacks
+The app uses brypt to hash the user passwords.
+
+Cross-site Scripting (XSS) todo?
+Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user.
+
+CSRF (Cross-Site Request Forgery)
+Our protects against CSRF with CSURF, it creates a token with req.csrfToken(), in requests that mutate state. This token is validated against the visitor's session or csrf cookie.
+
+Our app uses Helmet, which sets security related HTTP headers. 
+
 ---
 
 ## Installation
