@@ -24,8 +24,10 @@ for high-school students, especially for the domains of mathematics and computer
 ├── index.js                --> bwa app
 ├── package.json            --> app info and dependencies
 ├── controllers             --> controllers (handle e.g. routing)
-│   ├──  ...                -->   ...
-│   └── hello.js            --> the same as "minimal viable grader"
+│   ├── users.js            --> handles the user logic
+│   ├── hello.js            --> the same as "minimal viable grader"
+│   ├── questionnaire.js    --> handles the management view logic
+│   └── game.js             --> handles the game logic
 │── middleware              --> middleware
 │   ├── auth.js             --> ...
 │   ├── passport.js         --> ...
@@ -35,19 +37,25 @@ for high-school students, especially for the domains of mathematics and computer
 ├── public                  --> location for public (static) files
 │   ├── img                 --> for images
 │   ├── js                  --> for javascript
+│   │   ├── new.js          --> creates a new quiz
+│   │   ├── quizgame.js     --> the quizgame
+│   │   └── search.js       --> search function for the management view
 │   └── css                 --> for styles
 ├── routes                  --> a dir for router modules
 │   ├── hello.js            --> / (root) router
-│   ├──  ...                -->   ...
+│   ├── game.js             --> /games router
+│   ├── questionnaire.js    --> /questionnaire router
 │   └── users.js            --> /users router
 ├── views                   --> views - visible parts
 │   ├── error.hbs           --> error view
 │   ├── hello.hbs           --> main view - "minimal viable grader"
 │   ├── layouts             --> layouts - handlebar concept
 │   │   └── layout.hbs      --> layout view, "template" to be rendered
+│   ├── management          --> handlebar components for the management view
+│   ├── game                --> handlebar components for the game and grading
 │   └── partials            --> smaller handlebar components to be included in views
-└── test                    --> tests
-│   ├── assignment          --> TODO: your tests here
+│── test                    --> tests
+│   ├── assignment          --> tests for the management view, grader and game
 │   ├── integration         --> integration tests
 └── └── models              --> unit tests for models
 
