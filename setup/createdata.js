@@ -9,7 +9,7 @@ const path = require('path');
 
 const Questionnaire = require('../models/questionnaire');
 
-module.exports = async function () {
+module.exports = async function() {
     const rawData = fs.readFileSync(
         path.resolve(__dirname, './game.questionnaire.json')
     );
@@ -22,8 +22,7 @@ module.exports = async function () {
         await Questionnaire.create(data);
 
         return 'Inserted sample data to database';
-    }
-    catch (err) {
+    } catch (err) {
         console.log('Error (setup/createdata.js): duplicates exist in the database.');
     }
 

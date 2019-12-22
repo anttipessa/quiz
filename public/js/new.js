@@ -20,8 +20,8 @@ function addOption() {
 
     let correctness = `<label for="correctness">Correctness</label>
                         <select class="form-control" name="correctness${questionNumber}" required>
-                            <option value="true">True</option>
                             <option value="false">False</option>
+                            <option value="true">True</option>
                         </select>`
     let newElem1 = document.createElement('div')
     newElem1.classList.add('form-group');
@@ -58,8 +58,8 @@ function addQuestion() {
                             <div class="form-group">
                                 <label for="correctness">Correctness</label>
                                 <select class="form-control" name="correctness${questionCounter}" required>
-                                    <option value="true">True</option>
                                     <option value="false">False</option>
+                                    <option value="true">True</option>
                                 </select>
                             </div>
                         </div>

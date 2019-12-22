@@ -101,7 +101,6 @@ describe('Game: A+ protocol', function() {
                 .post(edittest)
                 .type('form')
                 .send(editload);
-            expect(response).to.redirectTo(mview);
         });
 
         it('C: create operation available');
