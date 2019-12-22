@@ -29,7 +29,7 @@ async function loadGameData() {
 function buildQuiz() {
     const output = [];
     let qnumber = 0;
-    
+
     // for each question...
     game.questions.forEach((currentQuestion, questionNumber) => {
         const answers = [];
@@ -44,11 +44,24 @@ function buildQuiz() {
         })
         output.push(
             `<div class='slide'>
-             <div class='question'> ${currentQuestion.title} ${qnumber}/${game.questions.length}</div>
+             <div class='question'> ${currentQuestion.title}</div>
              <div class='answers'> ${answers.join('')} </div>
-           </div>`    
+           </div>`
         );
     });
+
+    let card = document.querySelector('.card');
+    let trackerElem = document.createElement('div');
+    trackerElem.classList.add('card-footer', 'text-center');
+    let trackerText = `<ol class="track-progress">`;
+    for (let i = 0; i < game.questions.length; i++) {
+        trackerText += `<li class="todo" id=bar${i + 1}>
+                        <span>${i + 1}</span>
+                        <li>`
+    }
+    trackerText += '</ol>';
+    trackerElem.innerHTML = trackerText;
+    card.appendChild(trackerElem);
 
     // finally combine our output list into one string of HTML and put it on the page
     quizContainer.innerHTML = output.join('');
@@ -82,14 +95,31 @@ function showSlide(n) {
 }
 
 function showNextSlide() {
+    let trackerElem = document.getElementById(`bar${currentSlide + 1}`)
+    if (trackerElem.classList.contains('todo')) {
+        trackerElem.classList.remove('todo')
+        trackerElem.classList.add('done')
+    }
+
     showSlide(currentSlide + 1);
 }
 
 function showPreviousSlide() {
+    let trackerElem = document.getElementById(`bar${currentSlide}`)
+    if (trackerElem.classList.contains('done')) {
+        trackerElem.classList.remove('done')
+        trackerElem.classList.add('todo')
+    }
     showSlide(currentSlide - 1);
 }
 
 function updateForm() {
+    let trackerElem = document.getElementById(`bar${currentSlide + 1}`)
+    if (trackerElem.classList.contains('todo')) {
+        trackerElem.classList.remove('todo')
+        trackerElem.classList.add('done')
+    }
+
     const answerContainers = quizContainer.querySelectorAll(".answers");
 
     // for each question...

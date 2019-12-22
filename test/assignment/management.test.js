@@ -16,8 +16,8 @@ const User = require('../../models/user');
 const loginUrl = '/users/login';
 const mview = '/questionnaires';
 const games = '/games';
-const testid = '/questionnaires/5dffbfc3e435d617c7419acf';
-const edittest = '/questionnaires/edit/5dffbb52da97f3170768e853';
+const testid = '/questionnaires/5dffc2fc5e802e1800e275ca';
+const edittest = '/questionnaires/edit/5dffc2fc5e802e1800e275ca';
 
 describe('Game: A+ protocol', function() {
     let request;
@@ -75,7 +75,7 @@ describe('Game: A+ protocol', function() {
             expect(response).to.redirectTo(/\/users\/login$/);
         });
 
-        // how to get a questionnaire id? to test show/edit/delete? 
+        // how to get a questionnaire id? for show/edit/delete? 
         it('should allow admin to view a game in management view', async function() {
             await request
                 .post(loginUrl)

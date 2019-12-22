@@ -143,3 +143,60 @@ textarea {
     pointer-events: none;
     color: #aaa;
 }
+
+.track-progress {
+    height: 80px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+    
+.track-progress li {
+    list-style-type: none;
+    position: relative;
+    text-align: center;
+    color: #bbb;
+    border-bottom: 4px #bbb solid;
+    line-height: 3em;
+    float: left;
+}
+      
+.track-progress li:after {
+    content: "\00a0\00a0";
+}
+      
+.track-progress li:before {
+    position: relative;
+    bottom: -2.6em;
+    float: left;
+    left: 50%;
+}
+      
+.track-progress li span {
+    padding-left: 0.75em;
+}
+    
+.track-progress li.done {
+    color: #bbb;
+    font-weight: bold;
+    border-bottom: 4px #bbb solid;
+}
+      
+.track-progress li.done:before {
+    content: "";
+    background: #bbb;
+    border: 0.1em solid #bbb;
+    height: 0.9em;
+    width: 0.9em;
+    border-radius: 1em;
+}
+    
+.track-progress li.todo:before {
+    content: "";
+    background: white;
+    border: 0.1em solid #bbb;
+    height: 0.9em;
+    width: 0.9em;
+    border-radius: 1em;
+}
+  

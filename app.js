@@ -14,6 +14,7 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const config = require('config');
+const sanitizer = require('express-sanitizer')
 
 // NOTE: This must be required BEFORE calling express()
 //       as in: const app = express()
@@ -23,6 +24,7 @@ require('express-async-errors');
 const dbConfig = config.get('mongo');
 const sessionConfig = config.get('session');
 const app = express();
+app.use(sanitizer());
 
 // connect to database
 const db = require('./models/db');
@@ -131,12 +133,12 @@ require('./router.js')(app);
 
 // catch 404 and forward to error handler
 // NOTE: this middleware must be defined after all other routes
-app.use(function(request, response, next) {
+app.use(function (request, response, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function(error, request, response, next) {
+app.use(function (error, request, response, next) {
     // set locals, only providing error in development
     response.locals.message = error.message;
     response.locals.error = request.app.get('env') === 'development' ? error : {};
