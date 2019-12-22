@@ -41,7 +41,7 @@ module.exports = {
                 'errorMessage',
                 'Found existing exercise with the given title.'
             );
-            return response.redirect('/questionnaires')
+            return response.redirect('/questionnaires');
         }
 
         // If there is only one question, put the title and maxPoints inside an array
@@ -57,17 +57,16 @@ module.exports = {
         questionnaire.submissions = request.sanitize(maxSubmissions);
         questionnaire.questions = [];
 
-        let options = [];
+        const options = [];
 
-        for (let key in request.body) {
+        for (const key in request.body) {
             if (key !== 'title' && key !== 'maxSubmissions' &&
                 key !== 'questionTitle' && key !== 'maxPoints') {
                 // Push option values and correctness-informations as array,
                 // if only 1 value was given, make it an array
                 if (!Array.isArray(request.body[key])) {
                     options.push([request.body[key]]);
-                }
-                else {
+                } else {
                     options.push(request.body[key]);
                 }
             }
@@ -75,15 +74,15 @@ module.exports = {
 
         let m = 0;
         for (let i = 0; i < questionTitle.length; i++) {
-            let question = {};
-            question['title'] = request.sanitize(questionTitle[i]);
-            question['maxPoints'] = request.sanitize(maxPoints[i]);
-            question['options'] = [];
+            const question = {};
+            question.title = request.sanitize(questionTitle[i]);
+            question.maxPoints = request.sanitize(maxPoints[i]);
+            question.options = [];
             for (let j = 0; j < options[m].length; j++) {
-                let option = {};
-                option['option'] = request.sanitize(options[m][j]);
-                option['correctness'] = request.sanitize(options[m + 1][j]);
-                question['options'].push(option);
+                const option = {};
+                option.option = request.sanitize(options[m][j]);
+                option.correctness = request.sanitize(options[m + 1][j]);
+                question.options.push(option);
             }
             questionnaire.questions.push(question);
             m += 2;
@@ -104,13 +103,13 @@ module.exports = {
                     if (opt.correctness) {
                         trueCounter += 1;
                         if (trueCounter > 1) {
-                            errorMsg = 'Could not create a new exercise: a question can have only 1 correct option'
+                            errorMsg = 'Could not create a new exercise: a question can have only 1 correct option';
                             throw new Error();
                         }
                     }
                 });
                 if (trueCounter === 0) {
-                    errorMsg = 'Could not create a new exercise: All questions must have 1 correct option.'
+                    errorMsg = 'Could not create a new exercise: All questions must have 1 correct option.';
                 }
             });
             await questionnaire.save();
@@ -118,14 +117,13 @@ module.exports = {
                 'successMessage',
                 `Exercise "${questionnaire.title}" created succesfully.`
             );
-        }
-        catch (err) {
+        } catch (err) {
             request.flash(
                 'errorMessage',
                 errorMsg
             );
         }
-        response.redirect('/questionnaires')
+        response.redirect('/questionnaires');
 
     },
 
@@ -143,7 +141,7 @@ module.exports = {
         // todo csrf token, error handling, validation?
         const { option } = request.body;
         let { title } = request.body;
-        let correctnessList = [];
+        const correctnessList = [];
         if (!Array.isArray(title)) {
             title = [title];
         }
@@ -172,21 +170,17 @@ module.exports = {
                     if (opt.correctness) {
                         trueCounter += 1;
                         if (trueCounter > 1) {
-                            errorMsg = 'Failed to update quiz information: a question can have only 1 correct option.'
+                            errorMsg = 'Failed to update quiz information: a question can have only 1 correct option.';
                             throw new Error();
                         }
                     }
                 });
                 if (trueCounter === 0) {
-                    errorMsg = 'Failed to update quiz information: All questions must have 1 correct option.'
+                    errorMsg = 'Failed to update quiz information: All questions must have 1 correct option.';
                     throw new Error();
                 }
                 j++;
             });
-            j++;
-        });
-
-        try {
             await game.save();
 
             request.flash(
@@ -198,7 +192,7 @@ module.exports = {
         catch (err) {
             request.flash(
                 'errorMessage',
-                'Failed to update quiz information'
+                errorMsg
             );
         }
         response.redirect('/questionnaires');
