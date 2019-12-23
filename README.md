@@ -60,60 +60,50 @@ for high-school students, especially for the domains of mathematics and computer
 │   ├── integration         --> integration tests
 └── └── models              --> unit tests for models
 
-
 ```
-
-TODO: add your files here and give a short description
 
 ## Game
 
-TODO: describe your work
-
-"Create a short document that describes how your coursework handles these requirements."
-
-The game is a quiz, where you select one answer per question and you can move to next question by clicking the "Next"-button. You can also go back to previous questions with the “Previous”-button. After you have answered all the questions, a grade button appears and clicking it automatically scores your quiz and shows the final score. The quizzes can be accessed from the navigation bar or through the path /games.
+The game is a quiz, where you select one answer per question and you can move to next question by clicking the "Next"-button. You can also go back to previous questions with the “Previous”-button. After you have answered all the questions, a grade button appears and clicking it automatically scores your quiz and shows the final score. The quizzes can be accessed from the navigation bar or through the path /games. The quizzes are only visable for registered users.
 
 Game data is fetched from MongoDB and the questions and answer options come from that data-object. Answer options are randomized so that if the same quiz is launched multiple times, the order of the options for each question is not always the same. However, questions are shown in selected order.
 
 ## Management view
 
-TODO: describe your work
+Management view gives the admin and teachers the ability to create, view, edit, delete (CRUD) and also search quizzes from the list of all the quizzes. Management view can be accessed from the navigation bar or through the path /questionnaires.
 
-Management view gives the admin and teacher the ability to create, view, edit, delete (CRUD) and also search quizzes from the list of all quizzes.
 - (C) Clicking "Create.." displays a view where you can create a new quiz. Quiz is given a title and the amount of max submissions and then it can be given multiple different questions. More questions are added by clicking the "Add question"-button. Each question must be given at least two different options and to them are given a true/false value by the correctness of the option. More than two options can be added to a question by clicking the "Add option"-button. However, maximum of five (5) options can be given to a single question to keep the quiz-game view in control.
 - (R) Clicking "Show" displays the selected quiz, with ability to see which answer is correct and how many points each question gives.
 - (U) Clicking "Edit" lets you edit the fields in the selected quiz and save the modified values to the database.
 - (D) Clicking "Delete", opens a view from where you can delete the selected quiz.
 
-The search function filters the shown quizzes based on the given input. Management view can be accessed from the navigation bar or through the path /questionnaires.
+The search function filters the shown quizzes based on the given input. 
 
 ## Tests and documentation
 
-TODO: describe your work
-
-Our tests will focus on the management view and testing the game.
+Our tests will focus on the management view and testing the game. They're located in the /test/assignment/ folder. 
+- grade.test.js tests the grader
+- management.test.js tests the management view
 
 ## Security concerns
 
-TODO: list the security threats represented in the course slides.
-Document how your application protects against the threats.
-You are also free to add more security threats + protection here, if you will.
-
 NoSQL Injections 
-todo?
-
-Brute-force attacks
-The app uses bcrypt to hash the user passwords.
-
-Cross-site Scripting (XSS) todo?
-Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user.
-
 In the management view, all form inputs are handled with express-sanitizer so that the user can not send malicious inputs to the application.
 
-CSRF (Cross-Site Request Forgery)
+Brute-force attacks
+The app uses bcrypt to hash the passwords.
+
+Cross-site Scripting (XSS)
+In the management view, all form inputs are handled with express-sanitizer so that the user can not send malicious inputs to the application.
+
+Cross-Site Request Forgery (CSRF)
 Our app is protected against CSRF with CSURF, which creates a token with req.csrfToken(), in requests that mutate state. This token is validated against the visitor's session or csrf cookie.
 
 Our app also uses Helmet, which sets security related HTTP headers. 
+
+## Made by
+
+Henri, Niki & Antti
 
 ---
 
