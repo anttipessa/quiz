@@ -175,7 +175,7 @@ describe('/gameGrading', function() {
         const points = grader.grade(testgame4, answers3);
         expect(points).to.be.equal(1);
     });
-    it('shoulde return 0 when all given answers were false', async function() {
+    it('should return 0 when all given answers were false', async function() {
         const points = grader.grade(testgame4, answers4);
         expect(points).to.be.equal(0);
     });
