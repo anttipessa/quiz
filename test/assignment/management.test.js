@@ -109,7 +109,7 @@ describe('Game: A+ protocol', function() {
                 expect(response).to.have.status(200);
             });
 
-            it('should now allow unauthenticated user to create a new game', async function() {
+            it('should not allow unauthenticated user to create a new game', async function() {
                 const response = await request
                     .post(createtest)
                     .type('form')

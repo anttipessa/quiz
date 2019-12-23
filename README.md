@@ -64,17 +64,17 @@ for high-school students, especially for the domains of mathematics and computer
 
 ## Game
 
-The game is a quiz, where you select one answer per question and you can move to next question by clicking the "Next"-button. You can also go back to previous questions with the “Previous”-button. After you have answered all the questions, a grade button appears and clicking it automatically scores your quiz and shows the final score. The quizzes can be accessed from the navigation bar or through the path /games. The quizzes are only visable for registered users.
+The game is a quiz, where you select one answer per question and you can move to next question by clicking the "Next"-button. You can also go back to previous questions with the “Previous”-button. After you have answered all the questions, a grade button appears and clicking it automatically scores your quiz and shows the final score. The quizzes can be accessed from the navigation bar or through the path /games. The quizzes are only visible for registered users.
 
 Game data is fetched from MongoDB and the questions and answer options come from that data-object. Answer options are randomized so that if the same quiz is launched multiple times, the order of the options for each question is not always the same. However, questions are shown in selected order.
 
 ## Management view
 
-Management view gives the admin and teachers the ability to create, view, edit, delete (CRUD) and also search quizzes from the list of all the quizzes. Management view can be accessed from the navigation bar or through the path /questionnaires.
+Management view gives the admin and teachers the ability to create, view, edit, delete (CRUD) and also search quizzes from the list of all the quizzes. Management view can be accessed from the navigation bar or through the path /questionnaires. Students are not allowed to acces the management view.
 
-- (C) Clicking "Create.." displays a view where you can create a new quiz. Quiz is given a title and the amount of max submissions and then it can be given multiple different questions. More questions are added by clicking the "Add question"-button. Each question must be given at least two different options and to them are given a true/false value by the correctness of the option. More than two options can be added to a question by clicking the "Add option"-button. However, maximum of five (5) options can be given to a single question to keep the quiz-game view in control.
+- (C) Clicking "Create.." displays a view where you can create a new quiz. Quiz is given a title and the amount of max submissions and then it can be given multiple different questions. More questions are added by clicking the "Add question"-button. Each question must be given at least two different options and the options a true/false value via the correctness of the option. More than two options can be added to a question by clicking the "Add option"-button. However, maximum of five (5) options can be given to a single question to keep the quiz-game view in control. Only one option per question is allowed to have correctness-value of true.
 - (R) Clicking "Show" displays the selected quiz, with ability to see which answer is correct and how many points each question gives.
-- (U) Clicking "Edit" lets you edit the fields in the selected quiz and save the modified values to the database.
+- (U) Clicking "Edit" lets you edit the fields in the selected quiz and save the modified values to the database. 
 - (D) Clicking "Delete", opens a view from where you can delete the selected quiz.
 
 The search function filters the shown quizzes based on the given input. 
