@@ -27,6 +27,8 @@ describe('Game: A+ protocol', function() {
         try {
             // remove all users from the database and re-create admin user
             await User.deleteMany({});
+            // delete and create quiz data every test
+            await Questionnaire.deleteMany({});
             createGame();
             const userData = { ...admin, role: 'admin' };
             const user = new User(userData);
@@ -48,8 +50,7 @@ describe('Game: A+ protocol', function() {
             // create a new copy of admin for each test
             payload = { ...admin };
             editload = {
-                title: 'Changing the title here',
-                option: 'Newoption'
+                title: 'Changing the title here'
             };
             newload = {
                 title: 'New game title',
@@ -145,7 +146,6 @@ describe('Game: A+ protocol', function() {
                     .type('form')
                     .send(payload);
                 const game = await Questionnaire.findOne();
-                console.log(game._id);
                 const response = await request
                     .post(`/questionnaires/edit/${game._id}`)
                     .type('form')
