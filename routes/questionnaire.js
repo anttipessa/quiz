@@ -20,14 +20,12 @@ router.post('/new', QuestionnaireController.processCreate);
 
 // Update documents
 router.route('/edit/:id')
-    .all(auth.ensureTeacher, csrfProtection)
     .get(QuestionnaireController.update)
     .post(QuestionnaireController.processUpdate);
 
 // Delete documents
 router
     .route('/delete/:id')
-    .all(auth.ensureTeacher, csrfProtection)
     .get(QuestionnaireController.delete)
     .post(QuestionnaireController.processDelete);
 

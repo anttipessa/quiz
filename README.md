@@ -88,15 +88,19 @@ Our tests will focus on the management view and testing the game. They're locate
 ## Security concerns
 
 NoSQL Injections 
+
 In the management view, all form inputs are handled with express-sanitizer so that the user can not send malicious inputs to the application.
 
 Brute-force attacks
+
 The app uses bcrypt to hash the passwords.
 
 Cross-site Scripting (XSS)
+
 In the management view, all form inputs are handled with express-sanitizer so that the user can not send malicious inputs to the application.
 
 Cross-Site Request Forgery (CSRF)
+
 Our app is protected against CSRF with CSURF, which creates a token with req.csrfToken(), in requests that mutate state. This token is validated against the visitor's session or csrf cookie.
 
 Our app also uses Helmet, which sets security related HTTP headers. 

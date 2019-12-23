@@ -10,7 +10,6 @@
                 </div>
                 <div class="card-footer">
                     <form method="POST" action="/questionnaires/delete/{{ game.id }}">
-                        <input type="hidden" name="_csrf" value="{{csrfToken}}">
                         <button type="submit" class="btn btn-primary">Delete</button>
                     </form>
                     <p class="lead mt-4"><a href="/questionnaires">Cancel</a></p>

@@ -11,14 +11,14 @@ chai.use(chaiHttp);
 const app = require('../../app.js');
 const admin = config.get('admin');
 const User = require('../../models/user');
+const Questionnaire = require('../../models/questionnaire');
+const createGame = require('../../setup/createdata');
 
 const loginUrl = '/users/login';
 const mview = '/questionnaires';
 const games = '/games';
-const testid = '/questionnaires/5dffc2fc5e802e1800e275ca';
 const createtest = '/questionnaires/new';
-const edittest = '/questionnaires/edit/5dffc2fc5e802e1800e275ca';
-const deletetest = '/questionnaires/delete/5dffc2fc5e802e1800e275ca';
+
 
 describe('Game: A+ protocol', function() {
     let request;
@@ -27,7 +27,7 @@ describe('Game: A+ protocol', function() {
         try {
             // remove all users from the database and re-create admin user
             await User.deleteMany({});
-
+            createGame();
             const userData = { ...admin, role: 'admin' };
             const user = new User(userData);
             await user.save();
@@ -119,20 +119,21 @@ describe('Game: A+ protocol', function() {
         });
 
         describe('Read', function() {
-            // how to get a questionnaire id? for show/edit/delete? 
             it('should allow admin to view a game in management view', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
                     .send(payload);
+                const game = await Questionnaire.findOne();
                 const response = await request
-                    .get(testid);
+                    .get(`/questionnaires/${game._id}`);
                 expect(response).to.have.status(200);
             });
 
             it('should not allow unauthenticated user to view a game in management view', async function() {
+                const game = await Questionnaire.findOne();
                 const response = await request
-                    .get(testid);
+                    .get(`/questionnaires/${game._id}`);
                 expect(response).to.redirectTo(/\/users\/login$/);
             });
         });
@@ -143,33 +144,42 @@ describe('Game: A+ protocol', function() {
                     .post(loginUrl)
                     .type('form')
                     .send(payload);
+                const game = await Questionnaire.findOne();
+                console.log(game._id);
                 const response = await request
-                    .post(edittest)
+                    .post(`/questionnaires/edit/${game._id}`)
                     .type('form')
                     .send(editload);
+                expect(response).to.have.status(200);
             });
         });
 
+
         describe('Delete', function() {
             it('should not allow unauthenticated user access to game deletion view', async function() {
+                const game = await Questionnaire.findOne();
                 const response = await request
-                    .get(deletetest);
+                    .get(`/questionnaires/delete/${game._id}`);
                 expect(response).to.redirectTo(/\/users\/login$/);
+
+
             });
 
             it('should not allow unauthenticated user to delete a game in management view', async function() {
+                const game = await Questionnaire.findOne();
                 const response = await request
-                    .post(deletetest);
+                    .get(`/questionnaires/delete/${game._id}`);
                 expect(response).to.redirectTo(/\/users\/login$/);
             });
 
-            it('should allow admin to access game deletion in management view', async function() {
+            it('should allow admin to access to game deletion in management view', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
                     .send(payload);
+                const game = await Questionnaire.findOne();
                 const response = await request
-                    .get(deletetest);
+                    .get(`/questionnaires/delete/${game._id}`);
                 expect(response).to.have.status(200);
             });
 
@@ -178,10 +188,12 @@ describe('Game: A+ protocol', function() {
                     .post(loginUrl)
                     .type('form')
                     .send(payload);
+                const game = await Questionnaire.findOne();
+                console.log(game.title);
                 const response = await request
-                    .post(deletetest)
-                    .type('form')
-                    .send();
+                    .post(`/questionnaires/delete/${game._id}`);
+                expect(response).to.have.status(200);
+                console.log(await Questionnaire.find());
             });
         });
         describe('Games', function() {

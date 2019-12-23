@@ -133,8 +133,7 @@ module.exports = {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
             response.render('management/edit', {
-                game,
-                csrfToken: request.csrfToken()
+                game
             });
         } catch (err) {
             request.flash(
@@ -208,8 +207,7 @@ module.exports = {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
             response.render('management/delete', {
-                game,
-                csrfToken: request.csrfToken()
+                game
             });
         } catch (err) {
             request.flash(
