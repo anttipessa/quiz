@@ -73,6 +73,8 @@ TODO: describe your work
 
 The game is a quiz, where you select one answer per question and you can move to next question by clicking the "Next"-button. You can also go back to previous questions with the “Previous”-button. After you have answered all the questions, a grade button appears and clicking it automatically scores your quiz and shows the final score. The quizzes can be accessed from the navigation bar or through the path /games.
 
+Game data is fetched from MongoDB and the questions and answer options come from that data-object. Answer options are randomized so that if the same quiz is launched multiple times, the order of the options for each question is not always the same. However, questions are shown in selected order.
+
 ## Management view
 
 TODO: describe your work
@@ -101,15 +103,17 @@ NoSQL Injections
 todo?
 
 Brute-force attacks
-The app uses brypt to hash the user passwords.
+The app uses bcrypt to hash the user passwords.
 
 Cross-site Scripting (XSS) todo?
 Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser side script, to a different end user.
 
-CSRF (Cross-Site Request Forgery)
-Our protects against CSRF with CSURF, it creates a token with req.csrfToken(), in requests that mutate state. This token is validated against the visitor's session or csrf cookie.
+In the management view, all form inputs are handled with express-sanitizer so that the user can not send malicious inputs to the application.
 
-Our app uses Helmet, which sets security related HTTP headers. 
+CSRF (Cross-Site Request Forgery)
+Our app is protected against CSRF with CSURF, which creates a token with req.csrfToken(), in requests that mutate state. This token is validated against the visitor's session or csrf cookie.
+
+Our app also uses Helmet, which sets security related HTTP headers. 
 
 ---
 
@@ -231,16 +235,16 @@ This project follows the following coding styles:
 -   the code block starting bracket `{` is in the same line as the block starting the function, clause or loop
 -   the block terminating bracket `}` in the code block is always on its own line, except in cases where the whole block is on a single line
 -   the _camelCase_ style is recommended for naming functions and variables
--   the variables should not be defined by using the `var` keyword, but the variables and constants are defined using the`let` and `const` keywords
+-   the variables should not be defined by using the `var` keyword, but the variables and constants are defined using the `let` and `const` keywords
 -   each line of code ends with a semicolon `;`
 
 You can check the style of your code by command:
 
-`` ` npm run lint `` `
+` npm run lint `
 
 _eslint_ can also correct some code errors and style violations automatically, but you shouldn't rely on this blindly. You can do this explicitly with the command:
 
-`` ` npm run lint:fix `` `
+` npm run lint:fix `
 
 Naturally, it is easier to set up a code editor to monitor and correct the style during coding.
 

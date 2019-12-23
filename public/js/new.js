@@ -62,6 +62,18 @@ function addQuestion() {
                                     <option value="true">True</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="option">Option</label>
+                                <input type="text" name="option${questionCounter}" class="form-control" {{#if option}}value="{{option}}"
+                                    {{/if}} placeholder="Insert option here.." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="correctness">Correctness</label>
+                                <select class="form-control" name="correctness${questionCounter}" required>
+                                    <option value="false">False</option>
+                                    <option value="true">True</option>
+                                </select>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-primary addOption lvl${questionCounter}">Add Option</button>`
     let newElem = document.createElement('div')

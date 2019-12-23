@@ -21,11 +21,7 @@ module.exports = {
                 .exec();
             response.set('Content-Type', 'application/json');
             response.end(JSON.stringify(game));
-        }
-        // If game wasn't found with the given id, redirect back to /games
-        catch (err) {
-            console.error(err);
-            console.log('Redirecting to /games');
+        } catch (err) {
             request.flash(
                 'errorMessage',
                 'No game was found with the given id.'
@@ -46,7 +42,6 @@ module.exports = {
      * toimivammaksi funktioksi.
      */
     async launchGame(request, response) {
-        console.log(request.params.id);
         try {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
@@ -54,14 +49,10 @@ module.exports = {
                 game: JSON.stringify(game)
             };
             response.render('game/game', rendered);
-        }
-        // If game wasn't found with the given id, redirect back to /games
-        catch (err) {
-            console.error(err);
-            console.log('Redirecting to /games');
+        } catch (err) {
             request.flash(
                 'errorMessage',
-                'No game was found with the given id.'
+                `No game was found with id: ${request.params.id}`
             );
             return response.redirect('/games');
         }
@@ -95,9 +86,8 @@ module.exports = {
                 description: 'Some description here',
                 title: 'Points awarded'
             });
+
         } catch (err) {
-            console.error(err);
-            console.log('An error occured! Redirecting to /games');
             return response.redirect('/games');
         }
     },

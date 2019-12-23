@@ -3,7 +3,6 @@
 
 require('dotenv').config();
 const config = require('config');
-const http = require('http');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
@@ -15,15 +14,15 @@ const User = require('../../models/user');
 
 const loginUrl = '/users/login';
 const mview = '/questionnaires';
-const games = '/games';
 const testid = '/questionnaires/5dffc2fc5e802e1800e275ca';
+const createtest = '/questionnaires/new';
 const edittest = '/questionnaires/edit/5dffc2fc5e802e1800e275ca';
+const deletetest = '/questionnaires/delete/5dffc2fc5e802e1800e275ca';
 
-describe('Game: A+ protocol', function() {
+describe('Game: A+ protocol', function () {
     let request;
 
-
-    beforeEach(async function() {
+    beforeEach(async function () {
         try {
             // remove all users from the database and re-create admin user
             await User.deleteMany({});
@@ -37,12 +36,13 @@ describe('Game: A+ protocol', function() {
             throw err;
         }
     });
-    describe('/questionnaires', function() {
+    describe('Management view', function () {
 
         let payload;
         let editload;
+        let newload;
 
-        beforeEach(function() {
+        beforeEach(function () {
             request = chai.request.agent(app);
             // create a new copy of admin for each test
             payload = { ...admin };
@@ -50,16 +50,26 @@ describe('Game: A+ protocol', function() {
                 title: 'Changing the title here',
                 option: 'Newoption'
             };
+            newload = {
+                title: 'New game title',
+                maxSubmissions: 1,
+                questionTitle: 'Question 1',
+                maxPoints: 1,
+                option1: 'Correct',
+                correctness1: 'true',
+                option2: 'Incorrect',
+                correctness2: 'false'
+            };
             delete payload.name;
             delete payload.role;
         });
 
-        afterEach(function() {
+        afterEach(function () {
             request.close();
         });
 
 
-        it('should allow admin access to management view', async function() {
+        it('should allow admin access to management view', async function () {
             await request
                 .post(loginUrl)
                 .type('form')
@@ -69,47 +79,110 @@ describe('Game: A+ protocol', function() {
             expect(response).to.have.status(200);
         });
 
-        it('should not allow unauthenticated user access to management view', async function() {
+        it('should not allow unauthenticated user access to management view', async function () {
             const response = await request
                 .get(mview);
             expect(response).to.redirectTo(/\/users\/login$/);
         });
 
-        // how to get a questionnaire id? for show/edit/delete? 
-        it('should allow admin to view a game in management view', async function() {
-            await request
-                .post(loginUrl)
-                .type('form')
-                .send(payload);
-            const response = await request
-                .get(testid);
-            expect(response).to.have.status(200);
+        describe('Create', function () {
+            it('should allow admin access to creating a new game', async function () {
+                await request
+                    .post(loginUrl)
+                    .type('form')
+                    .send(payload);
+                const response = await request
+                    .get(createtest);
+                expect(response).to.have.status(200);
+            });
+
+            it('should allow admin to create a new game', async function () {
+                await request
+                    .post(loginUrl)
+                    .type('form')
+                    .send(payload);
+                const response = await request
+                    .post(createtest)
+                    .type('form')
+                    .send(newload);
+                expect(response).to.have.status(200);
+            });
+
+            it('should now allow unauthenticated user to create a new game', async function () {
+                const response = await request
+                    .post(createtest)
+                    .type('form')
+                    .send(newload);
+                expect(response).to.redirectTo(/\/users\/login$/);
+            });
         });
 
-        it('should not allow unauthenticated user to view a game in management view', async function() {
-            const response = await request
-                .get(testid);
-            expect(response).to.redirectTo(/\/users\/login$/);
+        describe('Read', function () {
+            // how to get a questionnaire id? for show/edit/delete? 
+            it('should allow admin to view a game in management view', async function () {
+                await request
+                    .post(loginUrl)
+                    .type('form')
+                    .send(payload);
+                const response = await request
+                    .get(testid);
+                expect(response).to.have.status(200);
+            });
+
+            it('should not allow unauthenticated user to view a game in management view', async function () {
+                const response = await request
+                    .get(testid);
+                expect(response).to.redirectTo(/\/users\/login$/);
+            });
         });
 
-        it('should allow admin to edit a game in management view', async function() {
-            await request
-                .post(loginUrl)
-                .type('form')
-                .send(payload);
-            const response = await request
-                .post(edittest)
-                .type('form')
-                .send(editload);
+        describe('Update', function () {
+            it('should allow admin to edit a game in management view', async function () {
+                await request
+                    .post(loginUrl)
+                    .type('form')
+                    .send(payload);
+                const response = await request
+                    .post(edittest)
+                    .type('form')
+                    .send(editload);
+            });
         });
 
-        it('C: create operation available');
+        describe('Delete', function () {
+            it('should not allow unauthenticated user access to game deletion view', async function () {
+                const response = await request
+                    .get(deletetest);
+                expect(response).to.redirectTo(/\/users\/login$/);
+            });
 
+            it('should not allow unauthenticated user to delete a game in management view', async function () {
+                const response = await request
+                    .post(deletetest);
+                expect(response).to.redirectTo(/\/users\/login$/);
+            });
 
-        it('R: read operation available');
+            it('should allow admin to access game deletion in management view', async function () {
+                await request
+                    .post(loginUrl)
+                    .type('form')
+                    .send(payload);
+                const response = await request
+                    .get(deletetest);
+                expect(response).to.have.status(200);
+            });
 
-        it('U: update operation available');
+            it('should allow admin to delete a game', async function () {
+                await request
+                    .post(loginUrl)
+                    .type('form')
+                    .send(payload);
+                const response = await request
+                    .post(deletetest)
+                    .type('form')
+                    .send();
+            });
+        });
 
-        it('D: delete operation available');
     });
 });

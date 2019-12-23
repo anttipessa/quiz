@@ -10,7 +10,6 @@ const QuestionnaireController = require('../controllers/questionnaire');
 
 router.use(auth.ensureTeacher);
 
-
 // View documents
 router.get('/', csrfProtection, QuestionnaireController.list);
 router.get('/:id([a-f0-9]{24})', QuestionnaireController.show);
@@ -20,14 +19,16 @@ router.get('/new', QuestionnaireController.create);
 router.post('/new', QuestionnaireController.processCreate);
 
 // Update documents
-router.route('/edit/:id([a-f0-9]{24})').all(auth.ensureTeacher, csrfProtection);
-router.get('/edit/:id([a-f0-9]{24})', QuestionnaireController.update);
-router.post('/edit/:id([a-f0-9]{24})', QuestionnaireController.processUpdate);
+router.route('/edit/:id').all(auth.ensureTeacher, csrfProtection);
+router.get('/edit/:id', QuestionnaireController.update);
+router.post('/edit/:id', QuestionnaireController.processUpdate);
 
 // Delete documents
-router.route('/delete/:id([a-f0-9]{24})').all(auth.ensureTeacher, csrfProtection);
-router.get('/delete/:id([a-f0-9]{24})', QuestionnaireController.delete);
-router.post('/delete/:id([a-f0-9]{24})', QuestionnaireController.processDelete);
+router.route('/delete/:id').all(auth.ensureTeacher, csrfProtection);
+router.get('/delete/:id', QuestionnaireController.delete);
+router.post('/delete/:id', QuestionnaireController.processDelete);
+
+router.all('/:id', QuestionnaireController.show);
 
 
 module.exports = router;

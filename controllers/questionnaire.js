@@ -1,6 +1,7 @@
 'use strict';
 
 const Questionnaire = require('../models/questionnaire');
+const redirectUrl = '/questionnaires';
 
 module.exports = {
 
@@ -12,17 +13,16 @@ module.exports = {
     },
 
     async show(request, response) {
-        console.log('Management View: Show');
         try {
             const game = await Questionnaire.findById(request.params.id)
                 .exec();
             response.render('management/exercise', { game });
-        }
-        // If game wasn't found with the given id, redirect back to /questionnaires
-        catch (err) {
-            console.error(err);
-            console.log('Redirecting to /questionnaires');
-            return response.redirect('/questionnaires');
+        } catch (err) {
+            request.flash(
+                'errorMessage',
+                `No game was found with id: ${request.params.id}`
+            );
+            return response.redirect(redirectUrl);
         }
     },
 
@@ -31,7 +31,6 @@ module.exports = {
     },
 
     async processCreate(request, response) {
-        console.log('Management View: Process Create');
         const { title, maxSubmissions } = request.body;
         let { questionTitle, maxPoints } = request.body;
         let questionnaire = await Questionnaire.findOne({ title }).exec();
@@ -41,7 +40,7 @@ module.exports = {
                 'errorMessage',
                 'Found existing exercise with the given title.'
             );
-            return response.redirect('/questionnaires');
+            return response.redirect(redirectUrl);
         }
 
         // If there is only one question, put the title and maxPoints inside an array
@@ -74,14 +73,16 @@ module.exports = {
 
         let m = 0;
         for (let i = 0; i < questionTitle.length; i++) {
-            const question = {};
-            question.title = request.sanitize(questionTitle[i]);
-            question.maxPoints = request.sanitize(maxPoints[i]);
-            question.options = [];
+            const question = {
+                title: request.sanitize(questionTitle[i]),
+                maxPoints: request.sanitize(maxPoints[i]),
+                options: []
+            };
             for (let j = 0; j < options[m].length; j++) {
-                const option = {};
-                option.option = request.sanitize(options[m][j]);
-                option.correctness = request.sanitize(options[m + 1][j]);
+                const option = {
+                    option: request.sanitize(options[m][j]),
+                    correctness: request.sanitize(options[m + 1][j])
+                };
                 question.options.push(option);
             }
             questionnaire.questions.push(question);
@@ -123,22 +124,28 @@ module.exports = {
                 errorMsg
             );
         }
-        response.redirect('/questionnaires');
+        response.redirect(redirectUrl);
 
     },
 
     async update(request, response) {
-        console.log('Management View: Update');
-        const game = await Questionnaire.findById(request.params.id).exec();
-        response.render('management/exercise_edit', {
-            game,
-            csrfToken: request.csrfToken()
-        });
+        try {
+            const game = await Questionnaire.findById(request.params.id)
+                .exec();
+            response.render('management/edit', {
+                game,
+                csrfToken: request.csrfToken()
+            });
+        } catch (err) {
+            request.flash(
+                'errorMessage',
+                `No game was found with id: ${request.params.id}`
+            );
+            return response.redirect(redirectUrl);
+        }
     },
 
     async processUpdate(request, response) {
-        console.log('Management View: Process Update');
-        // todo csrf token, error handling, validation?
         const { option } = request.body;
         let { title } = request.body;
         const correctnessList = [];
@@ -187,39 +194,36 @@ module.exports = {
                 'successMessage',
                 'The information of this quiz was updated successfully.'
             );
-        }
-        // If validation errors happen
-        catch (err) {
+        } catch (err) {
             request.flash(
                 'errorMessage',
                 errorMsg
             );
         }
-        response.redirect('/questionnaires');
+        response.redirect(redirectUrl);
     },
 
     async delete(request, response) {
-        console.log('Management View: Delete');
-        const game = await Questionnaire.findById(request.params.id).exec();
-
-        if (!game) {
+        try {
+            const game = await Questionnaire.findById(request.params.id)
+                .exec();
+            response.render('management/delete', {
+                game,
+                csrfToken: request.csrfToken()
+            });
+        } catch (err) {
             request.flash(
                 'errorMessage',
-                `Game not found (id: ${request.params.id})`
+                `No game was found with id: ${request.params.id}`
             );
-            return response.redirect('/questionnaires');
+            return response.redirect(redirectUrl);
         }
 
-        response.render('partials/exercise_delete', {
-            game,
-            csrfToken: request.csrfToken()
-        });
     },
 
     async processDelete(request, response) {
-        console.log('Management View: Process Delete');
         await Questionnaire.findByIdAndDelete(request.params.id).exec();
         request.flash('successMessage', 'Questionnaire removed successfully.');
-        response.redirect('/questionnaires');
+        response.redirect(redirectUrl);
     }
 };

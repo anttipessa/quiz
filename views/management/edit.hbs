@@ -1,0 +1,25 @@
+<div id="game" class="container">
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class="card">
+                <form method="POST" action="{{ game.id }}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center mb-3"><i class="fas fa-tasks"></i> Modify questionnaire</h3>
+
+                        </div>
+                        <h4 class="text-center mb-3 mt-3">{{game.title}}</h4>
+                        {{>messages}}
+                        <div class="card-body">
+                            <div class="form-group">
+                                {{>questionsEdit}}
+                            </div>
+                            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                            <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

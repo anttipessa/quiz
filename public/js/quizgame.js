@@ -28,12 +28,20 @@ async function loadGameData() {
 
 function buildQuiz() {
     const output = [];
-    let qnumber = 0;
 
-    // for each question...
+    function randomize(array) {
+        for (let i = 0; i < array.length; i++) {
+            const j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+
     game.questions.forEach((currentQuestion, questionNumber) => {
         const answers = [];
-        qnumber++;
+        // Randomize answer options
+        randomize(currentQuestion.options);
         currentQuestion.options.forEach(option => {
             answers.push(
                 `<label>
@@ -63,7 +71,6 @@ function buildQuiz() {
     trackerElem.innerHTML = trackerText;
     card.appendChild(trackerElem);
 
-    // finally combine our output list into one string of HTML and put it on the page
     quizContainer.innerHTML = output.join('');
 
     title = document.getElementById('title')
@@ -122,9 +129,8 @@ function updateForm() {
 
     const answerContainers = quizContainer.querySelectorAll(".answers");
 
-    // for each question...
     game.questions.forEach((currentQuestion, questionNumber) => {
-        // find selected answer
+        // Find selected answer
         const answerContainer = answerContainers[questionNumber];
         const selector = `input[name=question${questionNumber}]:checked`;
         const userAnswer = (answerContainer.querySelector(selector) || {}).value;
