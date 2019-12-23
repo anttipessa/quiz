@@ -14,15 +14,16 @@ const User = require('../../models/user');
 
 const loginUrl = '/users/login';
 const mview = '/questionnaires';
+const games = '/games';
 const testid = '/questionnaires/5dffc2fc5e802e1800e275ca';
 const createtest = '/questionnaires/new';
 const edittest = '/questionnaires/edit/5dffc2fc5e802e1800e275ca';
 const deletetest = '/questionnaires/delete/5dffc2fc5e802e1800e275ca';
 
-describe('Game: A+ protocol', function () {
+describe('Game: A+ protocol', function() {
     let request;
 
-    beforeEach(async function () {
+    beforeEach(async function() {
         try {
             // remove all users from the database and re-create admin user
             await User.deleteMany({});
@@ -36,13 +37,13 @@ describe('Game: A+ protocol', function () {
             throw err;
         }
     });
-    describe('Management view', function () {
+    describe('Management view', function() {
 
         let payload;
         let editload;
         let newload;
 
-        beforeEach(function () {
+        beforeEach(function() {
             request = chai.request.agent(app);
             // create a new copy of admin for each test
             payload = { ...admin };
@@ -64,12 +65,12 @@ describe('Game: A+ protocol', function () {
             delete payload.role;
         });
 
-        afterEach(function () {
+        afterEach(function() {
             request.close();
         });
 
 
-        it('should allow admin access to management view', async function () {
+        it('should allow admin access to management view', async function() {
             await request
                 .post(loginUrl)
                 .type('form')
@@ -79,14 +80,14 @@ describe('Game: A+ protocol', function () {
             expect(response).to.have.status(200);
         });
 
-        it('should not allow unauthenticated user access to management view', async function () {
+        it('should not allow unauthenticated user access to management view', async function() {
             const response = await request
                 .get(mview);
             expect(response).to.redirectTo(/\/users\/login$/);
         });
 
-        describe('Create', function () {
-            it('should allow admin access to creating a new game', async function () {
+        describe('Create', function() {
+            it('should allow admin access to creating a new game', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
@@ -96,7 +97,7 @@ describe('Game: A+ protocol', function () {
                 expect(response).to.have.status(200);
             });
 
-            it('should allow admin to create a new game', async function () {
+            it('should allow admin to create a new game', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
@@ -108,7 +109,7 @@ describe('Game: A+ protocol', function () {
                 expect(response).to.have.status(200);
             });
 
-            it('should now allow unauthenticated user to create a new game', async function () {
+            it('should now allow unauthenticated user to create a new game', async function() {
                 const response = await request
                     .post(createtest)
                     .type('form')
@@ -117,9 +118,9 @@ describe('Game: A+ protocol', function () {
             });
         });
 
-        describe('Read', function () {
+        describe('Read', function() {
             // how to get a questionnaire id? for show/edit/delete? 
-            it('should allow admin to view a game in management view', async function () {
+            it('should allow admin to view a game in management view', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
@@ -129,15 +130,15 @@ describe('Game: A+ protocol', function () {
                 expect(response).to.have.status(200);
             });
 
-            it('should not allow unauthenticated user to view a game in management view', async function () {
+            it('should not allow unauthenticated user to view a game in management view', async function() {
                 const response = await request
                     .get(testid);
                 expect(response).to.redirectTo(/\/users\/login$/);
             });
         });
 
-        describe('Update', function () {
-            it('should allow admin to edit a game in management view', async function () {
+        describe('Update', function() {
+            it('should allow admin to edit a game in management view', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
@@ -149,20 +150,20 @@ describe('Game: A+ protocol', function () {
             });
         });
 
-        describe('Delete', function () {
-            it('should not allow unauthenticated user access to game deletion view', async function () {
+        describe('Delete', function() {
+            it('should not allow unauthenticated user access to game deletion view', async function() {
                 const response = await request
                     .get(deletetest);
                 expect(response).to.redirectTo(/\/users\/login$/);
             });
 
-            it('should not allow unauthenticated user to delete a game in management view', async function () {
+            it('should not allow unauthenticated user to delete a game in management view', async function() {
                 const response = await request
                     .post(deletetest);
                 expect(response).to.redirectTo(/\/users\/login$/);
             });
 
-            it('should allow admin to access game deletion in management view', async function () {
+            it('should allow admin to access game deletion in management view', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
@@ -172,7 +173,7 @@ describe('Game: A+ protocol', function () {
                 expect(response).to.have.status(200);
             });
 
-            it('should allow admin to delete a game', async function () {
+            it('should allow admin to delete a game', async function() {
                 await request
                     .post(loginUrl)
                     .type('form')
@@ -183,6 +184,22 @@ describe('Game: A+ protocol', function () {
                     .send();
             });
         });
+        describe('Games', function() {
+            it('should not allow unauthenticated user access to games', async function() {
+                const response = await request
+                    .get(games);
+                expect(response).to.redirectTo(/\/users\/login$/);
+            });
 
+            it('should allow authenticated user access to games', async function() {
+                await request
+                    .post(loginUrl)
+                    .type('form')
+                    .send(payload);
+                const response = await request
+                    .get(games);
+                expect(response).to.have.status(200);
+            });
+        });
     });
 });

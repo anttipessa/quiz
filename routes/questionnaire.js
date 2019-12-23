@@ -19,14 +19,17 @@ router.get('/new', QuestionnaireController.create);
 router.post('/new', QuestionnaireController.processCreate);
 
 // Update documents
-router.route('/edit/:id').all(auth.ensureTeacher, csrfProtection);
-router.get('/edit/:id', QuestionnaireController.update);
-router.post('/edit/:id', QuestionnaireController.processUpdate);
+router.route('/edit/:id')
+    .all(auth.ensureTeacher, csrfProtection)
+    .get(QuestionnaireController.update)
+    .post(QuestionnaireController.processUpdate);
 
 // Delete documents
-router.route('/delete/:id').all(auth.ensureTeacher, csrfProtection);
-router.get('/delete/:id', QuestionnaireController.delete);
-router.post('/delete/:id', QuestionnaireController.processDelete);
+router
+    .route('/delete/:id')
+    .all(auth.ensureTeacher, csrfProtection)
+    .get(QuestionnaireController.delete)
+    .post(QuestionnaireController.processDelete);
 
 router.all('/:id', QuestionnaireController.show);
 

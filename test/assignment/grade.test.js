@@ -146,36 +146,36 @@ const answers3 = [['34 * 49 = 1667'], ['155724']];
 const answers4 = [['34 * 49 = 1667'], ['28']];
 
 
-describe('/gameGrading', function () {
-    it('should grade a game without any answers given', async function () {
+describe('/gameGrading', function() {
+    it('should grade a game without any answers given', async function() {
         const points = grader.grade(testgame1, emptyAnswer);
         expect(points).to.be.equal(0);
     });
-    it('should grade a game without any questions', async function () {
+    it('should grade a game without any questions', async function() {
         const points = grader.grade(testgame2, emptyAnswer);
         expect(points).to.be.equal(0);
     });
-    it('should get maxpoints from a game without any questions', async function () {
+    it('should get maxpoints from a game without any questions', async function() {
         const maxpoints = grader.maxPoints(testgame2);
         expect(maxpoints).to.be.equal(0);
     });
-    it('should grade without maxpoints', async function () {
+    it('should grade without maxpoints', async function() {
         const maxpoints = grader.maxPoints(testgame3);
         expect(maxpoints).to.be.equal(0);
     });
-    it('should grade correctly a game with only 1 question', async function () {
+    it('should grade correctly a game with only 1 question', async function() {
         const points = grader.grade(testgame1, answers1);
         expect(points).to.be.equal(2);
     });
-    it('should grade correctly within multi-question games', async function () {
+    it('should grade correctly within multi-question games', async function() {
         const points = grader.grade(testgame4, answers2);
         expect(points).to.be.equal(2);
     });
-    it('should return correct points when some of the answers are wrong and some right', async function () {
+    it('should return correct points when some of the answers are wrong and some right', async function() {
         const points = grader.grade(testgame4, answers3);
         expect(points).to.be.equal(1);
     });
-    it('shoulde return 0 when all given answers were false', async function () {
+    it('shoulde return 0 when all given answers were false', async function() {
         const points = grader.grade(testgame4, answers4);
         expect(points).to.be.equal(0);
     });

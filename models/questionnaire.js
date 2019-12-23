@@ -33,7 +33,7 @@ const optionSchema = new Schema({
     }
 });
 
-optionSchema.pre('validate', function (next) {
+optionSchema.pre('validate', function(next) {
     if (typeof this.hint !== 'string') return next();
     if (this.hint.trim().length === 0) this.hint = undefined;
     next();
@@ -121,7 +121,7 @@ const questionnaireSchema = new Schema({
     }
 });
 
-questionnaireSchema.statics.validateOption = function (option) {
+questionnaireSchema.statics.validateOption = function(option) {
     const result = Joi.validate(option, inputValidator.optionInputSchema, {
         abortEarly: false
     });
@@ -130,7 +130,7 @@ questionnaireSchema.statics.validateOption = function (option) {
     return result;
 };
 
-questionnaireSchema.statics.validateQuestion = function (question) {
+questionnaireSchema.statics.validateQuestion = function(question) {
     const result = Joi.validate(question, inputValidator.questionInputSchema, {
         abortEarly: false
     });
@@ -139,7 +139,7 @@ questionnaireSchema.statics.validateQuestion = function (question) {
     return result;
 };
 
-questionnaireSchema.statics.validateQuestionnaire = function (questionnaire) {
+questionnaireSchema.statics.validateQuestionnaire = function(questionnaire) {
     const result = Joi.validate(questionnaire, inputValidator.questionnaireInputSchema, {
         abortEarly: false
     });
@@ -148,7 +148,7 @@ questionnaireSchema.statics.validateQuestionnaire = function (questionnaire) {
     return result;
 };
 
-questionnaireSchema.statics.validateSearch = function (params) {
+questionnaireSchema.statics.validateSearch = function(params) {
     const searchInputSchema = Joi.object().keys({
         title: Joi.string()
             .trim()
