@@ -1,4 +1,19 @@
-# BWA/TIETA12 coursework assignment
+# BWA/TIETA12 coursework 
+
+This project was a groupwork project done in WWW programming course at the Tampere University. Other members of the group were Henri Hakkarainen and Niki Väänänen. Also we had an initial state of the project which included for example the Mongoose models and mostly the user registration and login screens. Our group implemented the game and the management view + some of the tests found at the test-folder.
+
+Techniques used at this project include for example the following:
+
+- Node.js
+- Express (backend)
+- Handlebars (views)
+- MongoDB and Mongoose (data models)
+- Vagrant and Docker (setting up the environment)
+- Mocha and Chai (unit tests)
+
+This project follows the MVC software desing pattern.
+
+<hr>
 
 In the assignment, we gamify multi-choice questionnaire.
 The assignment consists of three parts: the game, management view, and testing/documentation.
@@ -104,10 +119,6 @@ Cross-Site Request Forgery (CSRF)
 Our app is protected against CSRF with CSURF, which creates a token with req.csrfToken(), in requests that mutate state. This token is validated against the visitor's session or csrf cookie.
 
 Our app also uses Helmet, which sets security related HTTP headers. 
-
-## Made by
-
-Henri, Niki & Antti
 
 ---
 
