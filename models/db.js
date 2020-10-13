@@ -4,9 +4,10 @@ const mongoose = require('mongoose');
 const debug = require('debug')('bwa:mongo');
 
 function connectDB(dbConfig) {
-
+    let db = process.env.MONGODB_URI
+    if (process.env.NODE_ENV === 'test') db = `mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.db}`
     mongoose
-        .connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.db}`, {
+        .connect(db, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
@@ -27,9 +28,9 @@ function handleCriticalError(err) {
     throw err;
 }
 
-function disconnectDB(){
+function disconnectDB() {
     mongoose.disconnect();
 }
 
 
-module.exports = {connectDB, disconnectDB};
+module.exports = { connectDB, disconnectDB };
