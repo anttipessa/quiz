@@ -1,4 +1,4 @@
-# BWA/TIETA12 coursework 
+# Quiz - TIETA12 coursework 
 
 This project was a groupwork project done in WWW programming course at the Tampere University. Other members of the group were Henri Hakkarainen and Niki Väänänen. Also we had an initial state of the project which included for example the Mongoose models and mostly the user registration and login screens. Our group implemented the game and the management view + some of the tests found at the test-folder.
 
@@ -12,6 +12,10 @@ Techniques used at this project include for example the following:
 - Mocha and Chai (unit tests)
 
 This project follows the MVC software desing pattern.
+
+Project deployed to [Heroku](https://learning-quiz.herokuapp.com/). 
+
+Test user: admin@email.fi/1234567890
 
 <hr>
 
