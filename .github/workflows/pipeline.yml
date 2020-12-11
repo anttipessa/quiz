@@ -1,13 +1,14 @@
-name: quiz-test
+name: pipeline
 
 on:
   push:
     branches: [master]
   pull_request:
     branches: [master]
+    types: [opened, synchronize]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-18.04
 
     strategy:
@@ -45,3 +46,30 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  deploy:
+    needs: test
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: deployment
+        if: ${{ github.event_name == 'push' &&  !contains(github.event.head_commit.message, '#skip')}}
+        uses: akhileshns/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          checkstring: "ok"
+          delay: 5
+          rollbackonhealthcheckfailed: true
+
+  tag:
+    needs: deploy
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' &&  !contains(github.event.head_commit.message, '#skip')}}
+        uses: anothrNick/github-tag-action@1.33.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
