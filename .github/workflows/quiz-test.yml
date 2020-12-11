@@ -2,31 +2,36 @@ name: quiz-test
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [12.x]
         mongodb-version: [4.2]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.3.0
-      with:
-        mongodb-version: ${{ matrix.mongodb-version }}
-    - run: mongod --quiet --syslog &
-    - run: cp .env.test .env
-    - run: npm install
-    - run: npm test
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.3.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+      - name: Run Tests
+      - run: mongod --quiet --syslog &
+      - run: cp .env.test .env
+      - run: npm install
+      - run: npm test
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: mocha-results
+          path: mochawesome-report/mochawesome.json
