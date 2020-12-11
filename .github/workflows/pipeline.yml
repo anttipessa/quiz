@@ -58,6 +58,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
+          healthcheck: "https://learning-quiz.herokuapp.com/health"
           checkstring: "ok"
           delay: 5
           rollbackonhealthcheckfailed: true
