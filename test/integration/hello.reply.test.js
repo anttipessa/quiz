@@ -23,11 +23,11 @@ async function auth(browser) {
     await browser.pressButton('#btnLogin');
 }
 
-describe('Game reply: A+ protocol', function () {
+describe('Game reply: A+ protocol', function() {
     let server;
     let browser;
 
-    beforeEach(async function () {
+    beforeEach(async function() {
         server = http.createServer(app).listen(port);
         Browser.localhost('bwa', port);
         browser = new Browser();
@@ -38,32 +38,32 @@ describe('Game reply: A+ protocol', function () {
         await browser.pressButton('#grade');
     });
 
-    afterEach(function () {
+    afterEach(function() {
         server.close();
     });
 
-    it('must have meta field "status" in head', function () {
+    it('must have meta field "status" in head', function() {
         assert.equal(
             browser.document.head.querySelectorAll('[name=status]').length,
             1
         );
     });
 
-    it('should have meta field "max_points" in head', function () {
+    it('should have meta field "max_points" in head', function() {
         assert.equal(
             browser.document.head.querySelectorAll('[name=max_points]').length,
             1
         );
     });
 
-    it('must have meta field "points" in head', function () {
+    it('must have meta field "points" in head', function() {
         assert.equal(
             browser.document.head.querySelectorAll('[name=points]').length,
             1
         );
     });
 
-    it('meta field "points" in head must be less than or equal to max_points', function () {
+    it('meta field "points" in head must be less than or equal to max_points', function() {
         const pointsElem = browser.document.head.querySelector('[name=points]');
         const points = parseInt(pointsElem.getAttribute('content'));
         const maxPointsElem = browser.document.head.querySelector(
@@ -77,7 +77,7 @@ describe('Game reply: A+ protocol', function () {
         );
     });
 
-    it('should have meta field "DC.Description" in head', function () {
+    it('should have meta field "DC.Description" in head', function() {
         // Where does this field come from? Or more specifically
         // where does the value/description come from?
         // (Not strictly related to testing but still...)
@@ -88,7 +88,7 @@ describe('Game reply: A+ protocol', function () {
         );
     });
 
-    it('should have meta field "DC.Title" in head', function () {
+    it('should have meta field "DC.Title" in head', function() {
         // Where does this field come from? Or more specifically
         // where does the value/title come from? (Is this the question title?)
         // (Not strictly related to testing but still...)

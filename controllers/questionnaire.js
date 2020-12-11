@@ -30,6 +30,7 @@ module.exports = {
         response.render('management/new');
     },
 
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     async processCreate(request, response) {
         const { title, maxSubmissions } = request.body;
         let { questionTitle, maxPoints } = request.body;

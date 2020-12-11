@@ -25,13 +25,14 @@ jobs:
         uses: supercharge/mongodb-github-action@1.3.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-
-      - name: setup test env
-        run: mongod --quiet --syslog & cp .env.test .env
       - name: install
         run: npm install
+      - name: lint
+        run: npm run lint
+      - name: setup test env
+        run: mongod --quiet --syslog & cp .env.test .env
       - name: test
-      - run: npm test
+        run: npm test
       - name: Archive test results
         uses: actions/upload-artifact@v2
         with:

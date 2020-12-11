@@ -22,11 +22,11 @@ async function auth(browser) {
     await browser.pressButton('#btnLogin');
 }
 
-describe('Game: A+ protocol', function () {
+describe('Game: A+ protocol', function() {
     let server;
     let browser;
 
-    beforeEach(async function () {
+    beforeEach(async function() {
         server = http.createServer(app).listen(port);
         Browser.localhost('bwa', port);
         browser = new Browser();
@@ -36,21 +36,21 @@ describe('Game: A+ protocol', function () {
         await browser.visit('/hello');
     });
 
-    afterEach(async function () {
+    afterEach(async function() {
         server.close();
     });
 
-    it('must have a form with POST method', function () {
+    it('must have a form with POST method', function() {
         //http://zombie.js.org/#assertions
         browser.assert.element('form[method="POST"]');
         // browser.assert.attribute('form', 'method', 'post');
     });
 
-    it('must have a form with submit button', function () {
+    it('must have a form with submit button', function() {
         browser.assert.element('form button[type="submit"]');
     });
 
-    it('the submit button must have id "grade"', function () {
+    it('the submit button must have id "grade"', function() {
         browser.assert.element('#grade');
         browser.assert.element('button#grade');
     });

@@ -23,6 +23,7 @@ module.exports = async function() {
 
         return 'Inserted sample data to database';
     } catch (err) {
+        // eslint-disable-next-line no-console
         console.log('Error (setup/createdata.js): duplicates exist in the database.');
     }
 

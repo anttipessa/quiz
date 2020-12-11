@@ -165,6 +165,7 @@ describe('Game: A+ protocol', function() {
 
             });
 
+            // eslint-disable-next-line sonarjs/no-identical-functions
             it('should not allow unauthenticated user to delete a game in management view', async function() {
                 const game = await Questionnaire.findOne();
                 const response = await request

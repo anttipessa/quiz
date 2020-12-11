@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const debug = require('debug')('bwa:mongo');
 
 function connectDB(dbConfig) {
-    let db = process.env.MONGODB_URI
+    let db = process.env.MONGODB_URI;
+    // eslint-disable-next-line semi
     if (process.env.NODE_ENV === 'test') db = `mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.db}`
     mongoose
         .connect(db, {

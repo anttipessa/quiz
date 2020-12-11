@@ -9,5 +9,5 @@ module.exports = {
     showExercise(request, response) {
         // currently we use only the default exercise here
         response.render('home');
-    },
+    }
 };

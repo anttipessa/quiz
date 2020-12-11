@@ -105,22 +105,19 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.virtual('isAdmin').get(function () {
-    // eslint-disable-next-line babel/no-invalid-this
+userSchema.virtual('isAdmin').get(function() {
     return this.role === 'admin';
 });
 
-userSchema.virtual('isTeacher').get(function () {
-    // eslint-disable-next-line babel/no-invalid-this
+userSchema.virtual('isTeacher').get(function() {
     return this.role === 'admin' || this.role === 'teacher';
 });
 
-userSchema.virtual('isStudent').get(function () {
-    // eslint-disable-next-line babel/no-invalid-this
+userSchema.virtual('isStudent').get(function() {
     return this.role === 'admin' || this.role === 'student';
 });
 
-userSchema.statics.getAvailableRoles = function () {
+userSchema.statics.getAvailableRoles = function() {
     // FIXME: Do not hard code! Construct this automatically
     return [{
         name: 'Student',
@@ -136,7 +133,7 @@ userSchema.statics.getAvailableRoles = function () {
     }];
 };
 
-userSchema.statics.validateRole = function (data) {
+userSchema.statics.validateRole = function(data) {
     // validate user input for role
     const { _csrf, role } = inputSchema;
     const roleValidationSchema = {
@@ -148,7 +145,7 @@ userSchema.statics.validateRole = function (data) {
     return result;
 };
 
-userSchema.statics.validateLogin = function (data) {
+userSchema.statics.validateLogin = function(data) {
     // validate user input for login
     const { email, password } = inputSchema;
     const loginValidationSchema = {
@@ -160,7 +157,7 @@ userSchema.statics.validateLogin = function (data) {
     return result;
 };
 
-userSchema.statics.validateRegistration = function (data) {
+userSchema.statics.validateRegistration = function(data) {
     // validate user input for registration
     // eslint-disable-next-line no-shadow
     const { name, email, password, passwordConfirmation } = inputSchema;
@@ -179,7 +176,7 @@ userSchema.statics.validateRegistration = function (data) {
     return result;
 };
 
-userSchema.statics.validateUpdate = function (data) {
+userSchema.statics.validateUpdate = function(data) {
     // validate user input for update
     // eslint-disable-next-line no-shadow
     const { _csrf, name, email, password } = inputSchema;
@@ -197,7 +194,7 @@ userSchema.statics.validateUpdate = function (data) {
     return result;
 };
 
-userSchema.methods.checkPassword = async function (password) {
+userSchema.methods.checkPassword = async function(password) {
     return await bcrypt.compare(password, this.password);
 };
 

@@ -8,7 +8,7 @@ const HomeRouter = require('./routes/home');
 const QuestionnaireRouter = require('./routes/questionnaire');
 
 // Setup Routes
-module.exports = function (app) {
+module.exports = function(app) {
     app.use('/', HomeRouter);
     app.use('/users', UsersRouter);
     app.use('/', HelloRouter);
