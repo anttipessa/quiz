@@ -40,9 +40,6 @@ jobs:
         with:
           name: mocha-results
           path: mochawesome-report/
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
