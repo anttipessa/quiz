@@ -11,7 +11,7 @@ jobs:
         uses: jtalk/url-health-check-action@v1.2
         with:
           # Check the following URLs one by one sequentially
-          url: https://learning-quiz.herokuapp.com/http://learning-quiz.herokuapp.com/
+          url: https://learning-quiz.herokuapp.com/
           # Follow redirects, or just report success on 3xx status codes
           follow-redirect: no # Optional, defaults to "no"
           # Fail this action after this many failed attempts
