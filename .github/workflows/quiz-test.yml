@@ -28,11 +28,13 @@ jobs:
       - name: install
         run: npm install
       - name: lint
-        run: npm run lint
+        run: npm run lint:report
       - name: setup test env
         run: mongod --quiet --syslog & cp .env.test .env
       - name: test
         run: npm test
+      - name: coverage
+        run: npm run coverage
       - name: Archive test results
         uses: actions/upload-artifact@v2
         with:
