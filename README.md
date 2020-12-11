@@ -1,4 +1,5 @@
-# Quiz - TIETA12 coursework 
+# Quiz -  ![Healthcheck](https://github.com/anttipessa/quiz/workflows/Healthcheck/badge.svg) ![pipeline](https://github.com/anttipessa/quiz/workflows/pipeline/badge.svg) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=anttipessa_quiz&metric=alert_status)](https://sonarcloud.io/dashboard?id=anttipessa_quiz)
+
 
 This project was a groupwork project done in WWW programming course at the Tampere University. Other members of the group were Henri Hakkarainen and Niki Väänänen. Also we had an initial state of the project which included for example the Mongoose models and mostly the user registration and login screens. Our group implemented the game and the management view + some of the tests found at the test-folder.
 
