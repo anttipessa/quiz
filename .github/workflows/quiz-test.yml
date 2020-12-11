@@ -28,7 +28,7 @@ jobs:
       - name: install
         run: npm install
       - name: lint
-        run: npm run lint:report
+        run: npm run eslint:report
       - name: setup test env
         run: mongod --quiet --syslog & cp .env.test .env
       - name: test
